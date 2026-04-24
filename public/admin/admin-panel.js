@@ -25,12 +25,9 @@ async function isServerAvailable() {
 // Запускаем проверку (тихо, без логов)
 (async () => {
   const serverAvailable = await isServerAvailable();
-  
-  // Только если localhost И сервер запущен - показываем админ-панель
-  if (isLocal && serverAvailable) {
+  if (serverAvailable) {
     startAdminPanel();
   }
-  // Во всех остальных случаях - ничего не делаем, панель скрыта
 })();
 
 function startAdminPanel() {
