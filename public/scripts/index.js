@@ -18,6 +18,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactsMenu   = document.querySelector('.contacts-menu');
     const contactsCloseBtn = document.getElementById('contacts-close-btn');
     const searchInput    = document.getElementById('sidebar-search');
+    const materialsBtn = document.getElementById('materials-btn');
+    const materialsPanel = document.getElementById('materials-panel');
+    const materialsCloseBtn = document.getElementById('materials-close-btn');
+
+if (materialsBtn) {
+    materialsBtn.addEventListener('click', () => {
+        materialsPanel.classList.toggle('open');
+    });
+}
+
+if (materialsCloseBtn) {
+    materialsCloseBtn.addEventListener('click', () => {
+        materialsPanel.classList.remove('open');
+    });
+}
 
     function escapeHtml(str) {
         return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
