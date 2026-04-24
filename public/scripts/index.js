@@ -19,25 +19,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactsCloseBtn = document.getElementById('contacts-close-btn');
     const searchInput    = document.getElementById('sidebar-search');
     const materialsBtn = document.getElementById('materials-btn');
+    const materialsBtn   = document.getElementById('materials-btn');
     const materialsPanel = document.getElementById('materials-panel');
     const materialsCloseBtn = document.getElementById('materials-close-btn');
 
-if (materialsBtn) {
-    materialsBtn.addEventListener('click', () => {
-        materialsPanel.classList.toggle('open');
-    });
-}
-
-if (materialsCloseBtn) {
-    materialsCloseBtn.addEventListener('click', () => {
-        materialsPanel.classList.remove('open');
-    });
-}
-
-    function escapeHtml(str) {
-        return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    function closeAll() {
+        sidebar?.classList.remove('open');
+        overlay?.classList.remove('open');
+        contactsMenu?.classList.remove('open');
+        materialsPanel?.classList.remove('open');
+        document.body.style.overflow = '';
     }
 
+    materialsBtn?.addEventListener('click', () => {
+        const isOpen = materialsPanel?.classList.contains('open');
+        closeAll();
+        if (!isOpen) {
+            materialsPanel?.classList.add('open');
+            overlay?.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+    });
+
+    materialsCloseBtn?.addEventListener('click', () => {
+        materialsPanel?.classList.remove('open');
+        overlay?.classList.remove('open');
+        document.body.style.overflow = '';
+    });
     // 2. ЗАГРУЗКА КОНТАКТОВ — через API (сервер сохраняет туда же)
     async function loadContacts() {
         const container = document.querySelector('.contacts-content');
