@@ -177,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. ОТКРЫТИЕ / ЗАКРЫТИЕ МЕНЮ
     function openSidebar() {
+        closeAll();
         sidebar?.classList.add('open');
         overlay?.classList.add('open');
         document.body.style.overflow = 'hidden';
