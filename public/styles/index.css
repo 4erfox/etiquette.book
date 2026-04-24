@@ -507,6 +507,109 @@ h1 {
     .nav-btn svg { width: 20px; height: 20px; }
 }
 
+.materials-panel {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 300px;
+    height: 100%;
+    background: var(--bg-secondary, #1a1a1a);
+    border-left: 1px solid rgba(255,255,255,0.1);
+    z-index: 1000;
+    transition: right 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.materials-panel.open {
+    right: 0;
+}
+
+.materials-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    flex-shrink: 0;
+}
+
+.materials-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-primary, #fff);
+}
+
+.materials-close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary, #999);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.materials-close-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+
+.materials-content {
+    overflow-y: auto;
+    flex: 1;
+    padding: 0.5rem 0;
+}
+
+.materials-section {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.materials-section:last-child {
+    border-bottom: none;
+}
+
+.materials-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent, #c0392b);
+    cursor: pointer;
+}
+
+.materials-section-title svg {
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+
+.materials-item {
+    padding: 0.6rem 1rem 0.6rem 2.5rem;
+    font-size: 14px;
+    color: var(--text-secondary, #ccc);
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+}
+
+.materials-item:hover {
+    color: var(--text-primary, #fff);
+    background: rgba(255,255,255,0.05);
+}
+
 @media (max-width: 480px) {
     .hero { padding: 1rem; padding-bottom: 80px; min-height: 100svh; min-height: 100vh; }
     h1 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
