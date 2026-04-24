@@ -1,0 +1,201 @@
+СТРУКТУРА ПРОЕКТА: Admin Panel + Tutorial Site
+==============================================
+
+admin-config.json              - Конфигурация админ-панели
+admin.env                      - Переменные окружения (JWT_SECRET, пароль администратора)
+ARCHITECTURE.md                - Описание архитектуры проекта
+claude.md                      - Контекст для ИИ помощников
+generate-pages.js              - Скрипт генерации HTML страниц из markdown
+package.json                   - Зависимости Node.js и scripts
+README-JWT.md                  - Документация по JWT аутентификации
+server.js                      - Express сервер (API + WebSocket)
+vercel.json                    - Конфигурация для развертывания на Vercel
+vite.config.js                 - Конфигурация Vite
+
+📁 admin/
+├── admin-panel.js             - Главный модуль админ-панели (UI управление)
+├── bridge.js                  - WebSocket клиент для связи с сервером
+├── theme.js                   - Система темизации (светлая/темная тема)
+├── toast.js                   - Система уведомлений/тостов
+├── package.json               - Локальные зависимости админ-панели
+├── README.md                  - Инструкция админ-панели
+│
+└── 📁 panels/                 - Модули админ-интерфейса
+    ├── PagesPanel.js          - Редактор страниц/документов
+    ├── SitePanel.js           - Настройки сайта
+    ├── ContactsPanel.js       - Управление контактами
+    └── AssetsPanel.js         - Загрузка и управление файлами
+    
+└── 📁 public/
+    └── 📁 data/
+        └── contacts.json      - Данные контактов (используется в админ-панели)
+
+📁 public/
+├── index.html                 - Главная страница
+├── page.html                  - Шаблон для страниц документов
+│
+├── 📁 admin-config.json       - (дубликат конфига для фронтенда)
+│
+├── 📁 assets/                 - Загруженные пользователем файлы
+│   ├── 1776078184858-*.jpg
+│   └── 1776078420792-*.png
+│
+├── 📁 data/
+│   ├── nav.json               - Структура навигации (меню сайта)
+│   └── contacts.json          - Контакты и информация о сайте
+│
+├── 📁 docs/                   - Markdown документы (контент сайта)
+│   ├── apologies.md
+│   ├── business-attire.md
+│   ├── business-correspondence.md
+│   ├── business-lunch.md
+│   ├── conducting-negotiations.md
+│   ├── conflict-resolution.md
+│   ├── criticism-feedback.md
+│   ├── email-etiquette.md
+│   ├── greetings-introductions.md
+│   ├── history-traditions.md
+│   ├── meeting-preparation.md
+│   ├── national-features.md
+│   ├── onepage.md
+│   ├── phone-etiquette.md
+│   ├── respect-hierarchy.md
+│   ├── social-media-business.md
+│   ├── video-conferences.md
+│   └── why-needed.md
+│
+├── 📁 images/                 - Изображения сайта
+│   └── (изображения для контента)
+│
+├── 📁 pages/                  - Сгенерированные HTML страницы
+│   ├── apologies.html
+│   ├── business-attire.html
+│   ├── ... (для каждого .md создается .html)
+│   └── why-needed.html
+│
+└── 📁 scripts/                - JavaScript код фронтенда
+    ├── index.js               - Точка входа, инициализация приложения
+    ├── md-renderer.js         - Парсер markdown + frontmatter, рендеринг HTML
+    ├── pages.js               - Управление страницами (навигация, загрузка)
+    ├── search.js              - Функционал поиска
+    └── theme.js               - Управление темой (синхронизация с админ-панелью)
+    
+└── 📁 styles/                 - CSS стили
+    ├── index.css              - Основные стили
+    └── layout.css             - Стили макета
+
+📁 node_modules/               - Зависимости npm (исключено из этого файла)
+├── vite                       - Сборщик проекта
+├── jsonwebtoken               - JWT токены для аутентификации
+├── bcryptjs                   - Хеширование паролей
+├── express                    - REST API фреймворк
+├── marked                     - Парсер markdown
+└── ... (остальные зависимости)
+
+
+ОПИСАНИЕ СТЕКА
+==============
+
+Frontend:
+  - Vanilla JavaScript (без фреймворков для админки)
+  - HTML5
+  - CSS3
+  - Vite (сборщик)
+  - Marked (парсер markdown)
+
+Backend:
+  - Node.js
+  - Express (REST API)
+  - jsonwebtoken (JWT аутентификация)
+  - bcryptjs (хеширование паролей)
+  - WebSocket (для real-time коммуникации)
+
+Хранилище:
+  - Файловая система (markdown документы)
+  - JSON файлы (конфиги, данные)
+
+
+ОСНОВНОЙ ФУНКЦИОНАЛ
+===================
+
+1. Сайт-туториал:
+   - Разделы с документами по деловому этикету
+   - Поиск по документам
+   - Переключение темы (светлая/темная)
+   - Отзывчивый дизайн
+
+2. Админ-панель:
+   - JWT аутентификация (логин/пароль)
+   - Редактирование документов (markdown + frontmatter)
+   - Управление структурой навигации
+   - Загрузка и управление файлами
+   - Редактирование контактов
+   - Система уведомлений
+   - Переключение темы
+
+3. Безопасность:
+   - JWT токены для авторизации
+   - Хеширование паролей (bcryptjs)
+   - Валидация входных данных
+   - CORS для API
+   - Rate limiting
+
+
+КОНФИГУРАЦИОННЫЕ ФАЙЛЫ
+=======================
+
+admin.env:
+  JWT_SECRET=your-secret-key
+  ADMIN_USERNAME=admin
+  ADMIN_PASSWORD_HASH=bcrypt-hash
+  JWT_EXPIRES_IN=7d
+
+admin-config.json:
+  {
+    "title": "Admin Panel",
+    "wsUrl": "ws://localhost:5174",
+    "apiUrl": "http://localhost:5174/api"
+  }
+
+nav.json:
+  Структура меню с разделами и документами
+
+contacts.json:
+  {
+    "company": "...",
+    "email": "...",
+    "phone": "...",
+    ...
+  }
+
+
+КОМАНДЫ ДЛЯ ЗАПУСКА
+===================
+
+npm install              - Установка зависимостей
+npm run dev              - Запуск в режиме разработки (Vite + Express)
+npm run build            - Сборка для production
+npm run preview          - Просмотр prod версии
+node server.js           - Запуск только Express сервера
+
+Админ-панель доступна на: http://localhost:5174/admin/
+Основной сайт: http://localhost:5174/
+
+
+ФРОНТМАТТЕР В ДОКУМЕНТАХ
+========================
+
+Каждый .md файл может начинаться с YAML фронтматтера:
+
+---
+title: Заголовок страницы
+description: Описание для SEO
+author: Имя автора
+tags:
+  - этикет
+  - деловой
+section: основной-раздел
+date: 2026-04-20
+---
+
+Основной текст документа в markdown...
