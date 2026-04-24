@@ -141,6 +141,7 @@ function getAllPages() {
 // ─── Express ──────────────────────────────────────────────────────────────────
 
 const app = express();
+app.set('trust proxy', 1); 
 
 // ✅ ИСПРАВЛЕНО: helmet с разрешением внешних шрифтов и скриптов
 app.use(helmet({
