@@ -151,11 +151,15 @@ function flagImg(code, size) {
 
 function renderGrid() {
   document.getElementById('country-grid').innerHTML = countries.map(c => `
-    <div class="country-card${activeId === c.id ? ' active' : ''}" onclick="selectC('${c.id}')">
+    <div class="country-card${activeId === c.id ? ' active' : ''}" data-id="${c.id}">
       <span class="flag">${flagImg(c.flag, 28)}</span>
       <div class="c-name">${c.name}</div>
       <div class="c-sub">${c.sub}</div>
     </div>`).join('');
+
+  document.querySelectorAll('.country-card').forEach(card => {
+    card.addEventListener('click', () => selectC(card.dataset.id));
+  });
 }
 
 function selectC(id) {
@@ -210,7 +214,7 @@ function renderDetail(c) {
           <div class="detail-tagline">${c.tagline}</div>
         </div>
       </div>
-      <button class="close-btn" onclick="selectC('${c.id}')">
+      <button class="close-btn" data-close="${c.id}">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
@@ -229,6 +233,8 @@ function renderDetail(c) {
       ${c.donts.map(d => `<span class="tag dont">${d}</span>`).join('')}
     </div>
     ${compareHtml}`;
+
+  document.querySelector('.close-btn[data-close]').addEventListener('click', () => selectC(c.id));
 }
 
 renderGrid();
