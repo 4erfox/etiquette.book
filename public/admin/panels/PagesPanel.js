@@ -18,17 +18,27 @@ function esc(s) {
     return String(s ?? '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// ─── Загрузка EasyMDE ────────────────────────────────────────────────────────
+// ─── Загрузка EasyMDE + Font Awesome ─────────────────────────────────────────
 let mdeLoaded = false;
 
 function loadEasyMDE() {
     if (mdeLoaded || window.EasyMDE) { mdeLoaded = true; return Promise.resolve(); }
     return new Promise(resolve => {
+        // 1. Font Awesome — нужен для иконок тулбара EasyMDE
+        if (!document.querySelector('link[href*="font-awesome"]')) {
+            const fa = document.createElement('link');
+            fa.rel = 'stylesheet';
+            fa.href = 'https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css';
+            document.head.appendChild(fa);
+        }
+
+        // 2. EasyMDE CSS
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = 'https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css';
         document.head.appendChild(link);
 
+        // 3. EasyMDE JS
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js';
         script.onload = () => { mdeLoaded = true; resolve(); };
@@ -36,9 +46,8 @@ function loadEasyMDE() {
     });
 }
 
-// Вставляем стили ПОСЛЕ того как EasyMDE уже загрузился и проинициализировался.
-// Используем максимально специфичные селекторы + !important чтобы гарантированно
-// перебить все стили CDN независимо от порядка загрузки (актуально для render.com).
+// Стили тулбара — вставляются после загрузки EasyMDE чтобы перебить CDN-стили.
+// Вызывается несколько раз с задержкой — на render.com CDN может применяться позже.
 function applyToolbarStyles() {
     const id = 'mde-force-styles';
     const old = document.getElementById(id);
@@ -47,49 +56,65 @@ function applyToolbarStyles() {
     const s = document.createElement('style');
     s.id = id;
     s.textContent = `
-        /* Тулбар — светлый */
+        /* ── Тулбар: светлый фон, тёмные иконки ── */
         .EasyMDEContainer .editor-toolbar {
-            background: #efefef !important;
-            border-color: #d0d0d0 !important;
+            background: #f0f0f0 !important;
+            border: 1px solid #ccc !important;
             opacity: 1 !important;
             display: block !important;
             visibility: visible !important;
         }
+        /* Иконки Font Awesome в кнопках */
         .EasyMDEContainer .editor-toolbar button,
         .EasyMDEContainer .editor-toolbar a {
-            color: #222 !important;
+            color: #333 !important;
+            opacity: 1 !important;
+        }
+        .EasyMDEContainer .editor-toolbar button i,
+        .EasyMDEContainer .editor-toolbar a i,
+        .EasyMDEContainer .editor-toolbar button::before,
+        .EasyMDEContainer .editor-toolbar a::before {
+            color: #333 !important;
             opacity: 1 !important;
         }
         .EasyMDEContainer .editor-toolbar button:hover,
         .EasyMDEContainer .editor-toolbar a:hover {
-            background: #ddd !important;
+            background: #e0e0e0 !important;
             border-color: #bbb !important;
         }
-        .EasyMDEContainer .editor-toolbar button.active,
-        .EasyMDEContainer .editor-toolbar a.active {
-            background: #ccc !important;
+        .EasyMDEContainer .editor-toolbar button.active {
+            background: #d0d0d0 !important;
         }
         .EasyMDEContainer .editor-toolbar i.separator {
-            border-color: #c0c0c0 !important;
+            border-color: #bbb !important;
         }
 
-        /* Редактор — тёмный */
+        /* ── Редактор CodeMirror: тёмный ── */
         .EasyMDEContainer .CodeMirror {
             background: #1e1e1e !important;
             color: #d4d4d4 !important;
-            border-color: #333 !important;
-            font-family: monospace !important;
+            border-color: #444 !important;
+            font-family: 'Consolas', 'Monaco', monospace !important;
             font-size: 13px !important;
         }
         .EasyMDEContainer .CodeMirror-cursor {
             border-left-color: #fff !important;
         }
+        .EasyMDEContainer .CodeMirror-selected {
+            background: #264f78 !important;
+        }
 
-        /* Статусбар */
+        /* ── Статусбар ── */
         .EasyMDEContainer .editor-statusbar {
-            background: #efefef !important;
+            background: #f0f0f0 !important;
             color: #555 !important;
-            border-top: 1px solid #d0d0d0 !important;
+            border-top: 1px solid #ccc !important;
+        }
+
+        /* ── Превью ── */
+        .EasyMDEContainer .editor-preview {
+            background: #fff !important;
+            color: #222 !important;
         }
     `;
     document.head.appendChild(s);
@@ -99,13 +124,12 @@ function applyToolbarStyles() {
 async function openMdEditor(panelRoot, slug, title, onClose) {
     await loadEasyMDE();
 
-    // Overlay вставляем в panelRoot — корневой элемент панели.
-    // panelRoot должен иметь position:relative (выставляем принудительно).
+    // Overlay вставляется поверх всей панели — нужен position:relative на корне
     const prevPosition = panelRoot.style.position;
     panelRoot.style.position = 'relative';
 
     const overlay = document.createElement('div');
-    // НЕ используем overflow:hidden — он ломает отображение тулбара EasyMDE
+    // Без overflow:hidden — он ломает тулбар и fullscreen EasyMDE
     overlay.style.cssText = 'position:absolute;inset:0;z-index:50;background:#1e1e1e;display:flex;flex-direction:column;';
 
     overlay.innerHTML = `
@@ -142,15 +166,21 @@ async function openMdEditor(panelRoot, slug, title, onClose) {
             element: textarea,
             spellChecker: false,
             status: ['words', 'lines'],
-            toolbar: ['bold', 'italic', 'heading', '|', 'quote', 'unordered-list', 'ordered-list', '|', 'link', 'image', 'table', '|', 'preview', 'fullscreen'],
+            // side-by-side убран — ломает layout в панели
+            toolbar: [
+                'bold', 'italic', 'heading', '|',
+                'quote', 'unordered-list', 'ordered-list', '|',
+                'link', 'image', 'table', '|',
+                'preview', 'fullscreen'
+            ],
             minHeight: '400px',
             autofocus: true,
         });
 
-        // Применяем стили тулбара: сразу + с задержкой (на случай render.com)
+        // Применяем стили несколько раз — render.com может применять CDN с задержкой
         applyToolbarStyles();
-        setTimeout(applyToolbarStyles, 100);
-        setTimeout(applyToolbarStyles, 600);
+        setTimeout(applyToolbarStyles, 200);
+        setTimeout(applyToolbarStyles, 800);
 
         easyMDE.codemirror.on('change', () => {
             if (!dirty) { dirty = true; dirtyEl.style.display = 'inline'; }
@@ -198,8 +228,7 @@ export function renderPagesPanel(container) {
     function render() {
         const t = getT();
 
-        // position:relative нужен чтобы overlay редактора позиционировался
-        // относительно этого контейнера, а не улетел за его пределы
+        // position:relative нужен чтобы overlay редактора покрывал именно эту панель
         container.style.position = 'relative';
 
         container.innerHTML = `
