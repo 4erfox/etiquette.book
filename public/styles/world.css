@@ -1,64 +1,88 @@
-*{margin:0;padding:0;box-sizing:border-box}
+// Глобальная переменная для отслеживания активной страны
+let activeId = null;
 
-body{
-  font-family:'Inter',sans-serif;
-  background:#111;
-  color:#fff;
+// Функция отрисовки сетки стран
+function renderGrid() {
+    const grid = document.getElementById('country-grid');
+    if (!grid) return;
+    
+    grid.innerHTML = COUNTRIES_DATA.map(c => `
+        <div class="country-card ${activeId === c.id ? 'active' : ''}" onclick="selectCountry('${c.id}')">
+            <span class="flag">${c.flag}</span>
+            <div class="c-name">${c.name}</div>
+            <div class="c-sub">${c.sub}</div>
+        </div>
+    `).join('');
 }
 
-.hero{
-  padding:2rem;
-  text-align:center;
+// Функция выбора страны
+function selectCountry(id) {
+    if (activeId === id) {
+        // Закрываем детали, если нажали на ту же страну
+        activeId = null;
+        document.getElementById('detail-panel').classList.remove('show');
+        document.getElementById('empty-state').style.display = 'block';
+        renderGrid();
+        return;
+    }
+    
+    activeId = id;
+    renderGrid();
+    
+    const country = COUNTRIES_DATA.find(c => c.id === id);
+    renderDetail(country);
+    
+    document.getElementById('empty-state').style.display = 'none';
+    document.getElementById('detail-panel').classList.add('show');
+    
+    setTimeout(() => {
+        document.getElementById('detail-panel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 80);
 }
 
-.hero-label{
-  color:#FF6B5B;
-  font-size:12px;
-  text-transform:uppercase;
-}
-
-.country-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
-  gap:10px;
-  padding:20px;
-}
-
-.country-card{
-  background:#1e1e1e;
-  padding:15px;
-  border-radius:10px;
-  text-align:center;
-  cursor:pointer;
-  border:1px solid #333;
-}
-
-.country-card:hover{
-  border-color:#FF6B5B;
-}
-
-.flag{
-  width:40px;
-  height:28px;
-  object-fit:cover;
-  border-radius:4px;
-  margin-bottom:5px;
-}
-
-.flag-sm{
-  width:20px;
-  height:14px;
-}
-
-.detail-panel{
-  padding:20px;
-  display:none;
-}
-
-.detail-panel.show{
-  display:block;
-}
-
-.compare-item{
-  margin-top:10px;
-}
+// Функция отображения деталей о стране
+function renderDetail(country) {
+    const isKz = country.id === 'kz';
+    
+    let compareHtml = '';
+    
+    if (isKz) {
+        compareHtml = `
+            <div class="kz-block">
+                <span class="section-label">Казахстан — точка отсчёта</span>
+                <div class="kz-grid">
+                    ${country.kzSelf.map(item => `
+                        <div class="kz-item">
+                            <div class="ki-label">${item.label}</div>
+                            <div class="ki-text">${item.text}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    } else {
+        compareHtml = `
+            <div class="compare-block">
+                <div class="compare-header">
+                    <span class="flag-pair">🇰🇿 vs ${country.flag}</span>
+                    <h3>Казахстан vs ${country.name}</h3>
+                </div>
+                <div class="compare-grid">
+                    ${country.compare.map(item => `
+                        <div class="compare-item">
+                            <div class="ci-label">${item.label}</div>
+                            <div class="ci-row">
+                                <div class="ci-entry"><span class="flag-sm">🇰🇿</span>${item.kz}</div>
+                                <div class="ci-entry"><span class="flag-sm">${country.flag}</span>${item.other}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    const detailInner = document.getElementById('detail-inner');
+    if (!detailInner) return;
+    
+    detailInner.innerHTML =
