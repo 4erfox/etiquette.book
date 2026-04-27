@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Проверь себя — Деловой этикет</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles/quiz.css">
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Проверь себя</h1>
+  <p>Быстрые вопросы по деловому этикету Казахстана. Без занудства — только по делу.</p>
+</div>
+
+<!-- START SCREEN -->
+<div class="start-screen" id="start-screen">
+  <div class="modes-grid">
+
+    <div class="mode-card selected" data-mode="mix" onclick="selectMode(this)">
+      <div class="mc-top">
+        <span class="mc-icon">🎲</span>
+        <div class="mc-check"></div>
+      </div>
+      <div class="mc-title">Всё вперемешку</div>
+      <div class="mc-sub">Все типы вопросов, случайный порядок</div>
+    </div>
+
+    <div class="mode-card" data-mode="myth" onclick="selectMode(this)">
+      <div class="mc-top">
+        <span class="mc-icon">🔍</span>
+        <div class="mc-check"></div>
+      </div>
+      <div class="mc-title">Правда или миф</div>
+      <div class="mc-sub">Проверь расхожие убеждения</div>
+    </div>
+
+    <div class="mode-card" data-mode="mistake" onclick="selectMode(this)">
+      <div class="mc-top">
+        <span class="mc-icon">⚡</span>
+        <div class="mc-check"></div>
+      </div>
+      <div class="mc-title">Угадай ошибку</div>
+      <div class="mc-sub">Найди нарушение этикета</div>
+    </div>
+
+    <div class="mode-card" data-mode="odd" onclick="selectMode(this)">
+      <div class="mc-top">
+        <span class="mc-icon">🎯</span>
+        <div class="mc-check"></div>
+      </div>
+      <div class="mc-title">Что лишнее</div>
+      <div class="mc-sub">Один вариант из четырёх — лишний</div>
+    </div>
+
+  </div>
+  <button class="start-btn" onclick="startQuiz()">Начать тест</button>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div class="quiz-screen" id="quiz-screen">
+
+  <div class="progress-wrap">
+    <div class="progress-top">
+      <span class="progress-label" id="progress-label">Вопрос 1 из 10</span>
+      <span class="progress-score" id="progress-score">0 правильных</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="q-card" id="q-card">
+    <div class="q-type-badge">
+      <div class="q-type-dot"></div>
+      <span id="q-type-label">Тип вопроса</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback">
+        <div class="fb-title" id="fb-title"></div>
+        <div class="fb-text" id="fb-text"></div>
+      </div>
+      <button class="next-btn" id="next-btn" onclick="nextQuestion()">Следующий вопрос →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- RESULT SCREEN -->
+<div class="result-screen" id="result-screen">
+  <div class="result-card">
+
+    <div class="result-top">
+      <div class="result-circle" id="result-circle">
+        <div class="result-num" id="result-num">0</div>
+        <div class="result-total" id="result-total">из 10</div>
+      </div>
+      <div class="result-title" id="result-title"></div>
+      <div class="result-sub" id="result-sub"></div>
+    </div>
+
+    <div class="result-bar-wrap">
+      <div class="result-bar-label">
+        <span>Результат</span>
+        <span id="result-pct">0%</span>
+      </div>
+      <div class="result-bar">
+        <div class="result-bar-fill" id="result-bar-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="result-stats">
+      <div class="rs-item">
+        <div class="rs-val c" id="rs-correct">0</div>
+        <div class="rs-label">Правильных</div>
+      </div>
+      <div class="rs-item">
+        <div class="rs-val w" id="rs-wrong">0</div>
+        <div class="rs-label">Неправильных</div>
+      </div>
+    </div>
+
+    <div class="result-actions">
+      <button class="ra-btn primary" onclick="restartQuiz()">Пройти снова</button>
+      <button class="ra-btn secondary" onclick="goStart()">Сменить режим</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="/scripts/quiz.js"></script>
+</body>
+</html>
