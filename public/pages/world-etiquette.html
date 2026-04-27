@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Этикет без границ</title>
-
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Этикет без границ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="hero">
+        <span class="hero-label">Интерактивный гид</span>
+        <h1>Этикет без границ</h1>
+        <p>Выберите страну и узнайте особенности делового этикета — и чем они отличаются от Казахстана.</p>
+    </div>
 
-<div class="hero">
-  <span class="hero-label">Интерактивный гид</span>
-  <h1>Этикет без границ</h1>
-  <p>Выберите страну и узнайте особенности делового этикета — и чем они отличаются от Казахстана.</p>
-</div>
+    <div class="section">
+        <span class="section-label">Выберите страну</span>
+        <div class="country-grid" id="country-grid"></div>
+    </div>
 
-<div class="section">
-  <span class="section-label">Выберите страну</span>
-  <div class="country-grid" id="country-grid"></div>
-</div>
+    <hr class="divider">
 
-<hr class="divider">
+    <div class="empty-state" id="empty-state">
+        <div class="empty-inner">
+            <span class="eg">🌐</span>
+            <p>Нажмите на страну, чтобы узнать об особенностях её делового этикета</p>
+        </div>
+    </div>
 
-<div class="empty-state" id="empty-state">
-  <div class="empty-inner">
-    <span class="eg">🌐</span>
-    <p>Нажмите на страну, чтобы увидеть детали</p>
-  </div>
-</div>
+    <div class="detail-panel" id="detail-panel">
+        <div class="detail-inner" id="detail-inner"></div>
+    </div>
 
-<div class="detail-panel" id="detail-panel">
-  <div class="detail-inner" id="detail-inner"></div>
-</div>
-
-<script src="script.js"></script>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
