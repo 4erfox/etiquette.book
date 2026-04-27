@@ -144,13 +144,9 @@ const countries = [
 
 let activeId = null;
 
-function flagImg(code) {
-  const flags = {
-    'kz': '🇰🇿', 'jp': '🇯🇵', 'us': '🇺🇸', 'de': '🇩🇪',
-    'ae': '🇦🇪', 'cn': '🇨🇳', 'tr': '🇹🇷', 'ru': '🇷🇺',
-    'in': '🇮🇳', 'kr': '🇰🇷'
-  };
-  return '<span style="font-size:1.5em;line-height:1">' + (flags[code] || '🌐') + '</span>';
+function flagImg(code, size) {
+  size = size || 24;
+  return '<img src="https://flagcdn.com/w40/' + code + '.png" width="' + Math.round(size * 1.33) + '" height="' + size + '" style="border-radius:3px;vertical-align:middle;object-fit:cover" alt="' + code + '">';
 }
 
 function renderGrid() {
