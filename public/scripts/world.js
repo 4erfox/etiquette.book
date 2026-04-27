@@ -142,17 +142,31 @@ const countries = [
   }
 ];
 
-let activeId = null;
+const FLAGS = {
+  kz: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500"><rect width="900" height="500" fill="#00AFCA"/><circle cx="382" cy="250" r="75" fill="#FFD700" stroke="#FFD700"/><circle cx="382" cy="250" r="60" fill="#00AFCA"/><g fill="#FFD700"><circle cx="382" cy="160" r="12"/><circle cx="382" cy="340" r="12"/><circle cx="292" cy="250" r="12"/><circle cx="472" cy="250" r="12"/><circle cx="319" cy="187" r="12"/><circle cx="445" cy="313" r="12"/><circle cx="445" cy="187" r="12"/><circle cx="319" cy="313" r="12"/></g><rect x="820" y="0" width="80" height="500" fill="#FFD700"/><path d="M820 0 Q780 62.5 820 125 Q780 187.5 820 250 Q780 312.5 820 375 Q780 437.5 820 500" stroke="#00AFCA" stroke-width="8" fill="none"/></svg>`,
+  jp: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600"><rect width="900" height="600" fill="#fff"/><circle cx="450" cy="300" r="180" fill="#BC002D"/></svg>`,
+  us: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 100"><rect width="190" height="100" fill="#B22234"/><rect y="7.7" width="190" height="7.7" fill="#fff"/><rect y="23.1" width="190" height="7.7" fill="#fff"/><rect y="38.5" width="190" height="7.7" fill="#fff"/><rect y="53.8" width="190" height="7.7" fill="#fff"/><rect y="69.2" width="190" height="7.7" fill="#fff"/><rect y="84.6" width="190" height="7.7" fill="#fff"/><rect width="76" height="53.8" fill="#3C3B6E"/><g fill="#fff" font-size="9" text-anchor="middle"><text x="7.6" y="9">★</text><text x="22.8" y="9">★</text><text x="38" y="9">★</text><text x="53.2" y="9">★</text><text x="68.4" y="9">★</text><text x="15.2" y="18">★</text><text x="30.4" y="18">★</text><text x="45.6" y="18">★</text><text x="60.8" y="18">★</text><text x="7.6" y="27">★</text><text x="22.8" y="27">★</text><text x="38" y="27">★</text><text x="53.2" y="27">★</text><text x="68.4" y="27">★</text><text x="15.2" y="36">★</text><text x="30.4" y="36">★</text><text x="45.6" y="36">★</text><text x="60.8" y="36">★</text><text x="7.6" y="45">★</text><text x="22.8" y="45">★</text><text x="38" y="45">★</text><text x="53.2" y="45">★</text><text x="68.4" y="45">★</text></g></svg>`,
+  de: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 3"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#D00"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>`,
+  ae: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"><rect width="600" height="133" fill="#00732F"/><rect y="133" width="600" height="134" fill="#fff"/><rect y="267" width="600" height="133" fill="#000"/><rect width="200" height="400" fill="#FF0000"/></svg>`,
+  cn: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600"><rect width="900" height="600" fill="#DE2910"/><polygon points="150,60 177,145 255,145 192,195 215,280 150,232 85,280 108,195 45,145 123,145" fill="#FFDE00"/><g fill="#FFDE00"><polygon points="270,30 280,62 312,62 287,80 296,112 270,94 244,112 253,80 228,62 260,62" transform="rotate(20,270,71)"/><polygon points="330,100 340,132 372,132 347,150 356,182 330,164 304,182 313,150 288,132 320,132" transform="rotate(10,330,141)"/><polygon points="330,200 340,232 372,232 347,250 356,282 330,264 304,282 313,250 288,232 320,232" transform="rotate(-10,330,241)"/><polygon points="270,270 280,302 312,302 287,320 296,352 270,334 244,352 253,320 228,302 260,302" transform="rotate(-20,270,311)"/></g></svg>`,
+  tr: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect width="1200" height="800" fill="#E30A17"/><circle cx="425" cy="400" r="160" fill="#fff"/><circle cx="475" cy="400" r="130" fill="#E30A17"/><polygon points="583,400 612,490 695,430 695,370 612,310" fill="#fff"/></svg>`,
+  ru: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6"><rect width="9" height="2" fill="#fff"/><rect y="2" width="9" height="2" fill="#003DA5"/><rect y="4" width="9" height="2" fill="#CC0000"/></svg>`,
+  in: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600"><rect width="900" height="200" fill="#FF9933"/><rect y="200" width="900" height="200" fill="#fff"/><rect y="400" width="900" height="200" fill="#138808"/><circle cx="450" cy="300" r="60" fill="none" stroke="#000080" stroke-width="5"/><circle cx="450" cy="300" r="8" fill="#000080"/><g stroke="#000080" stroke-width="1.5" fill="none"><line x1="450" y1="240" x2="450" y2="360"/><line x1="390" y1="300" x2="510" y2="300"/><line x1="407" y1="257" x2="493" y2="343"/><line x1="407" y1="343" x2="493" y2="257"/><line x1="390" y1="279" x2="510" y2="321"/><line x1="390" y1="321" x2="510" y2="279"/><line x1="429" y1="244" x2="471" y2="356"/><line x1="429" y1="356" x2="471" y2="244"/><line x1="444" y1="240" x2="456" y2="360"/><line x1="444" y1="360" x2="456" y2="240"/><line x1="440" y1="241" x2="460" y2="359"/></g></svg>`,
+  kr: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600"><rect width="900" height="600" fill="#fff"/><circle cx="450" cy="300" r="120" fill="#CD2E3A"/><path d="M450,180 a120,120 0 0,1 0,240 a60,60 0 0,1 0,-120 a60,60 0 0,0 0,-120z" fill="#003478"/><g stroke="#000" stroke-width="12" fill="none"><g transform="translate(217,133) rotate(-45)"><line x1="-60" y1="-20" x2="60" y2="-20"/><line x1="-60" y1="0" x2="60" y2="0"/><line x1="-60" y1="20" x2="60" y2="20"/></g><g transform="translate(683,133) rotate(45)"><line x1="-60" y1="-20" x2="60" y2="-20"/><line x1="-60" y1="20" x2="60" y2="20"/><line x1="-30" y1="0" x2="30" y2="0"/></g><g transform="translate(217,467) rotate(45)"><line x1="-60" y1="-20" x2="60" y2="-20"/><line x1="-60" y1="20" x2="60" y2="20"/></g><g transform="translate(683,467) rotate(-45)"><line x1="-60" y1="-20" x2="60" y2="-20"/><line x1="-60" y1="0" x2="60" y2="0"/><line x1="-60" y1="20" x2="60" y2="20"/></g></g></svg>`,
+};
 
 function flagImg(code, w, h) {
   w = w || 40; h = h || 30;
-  return '<img src="https://flagcdn.com/' + w + 'x' + h + '/' + code + '.png" alt="' + code.toUpperCase() + '" style="width:' + w + 'px;height:' + h + 'px;object-fit:cover;border-radius:3px;">';
+  const svg = FLAGS[code] || '';
+  return '<span style="display:inline-flex;align-items:center;justify-content:center;width:' + w + 'px;height:' + h + 'px;overflow:hidden;border-radius:3px;flex-shrink:0;">' + svg.replace('<svg ', '<svg width="' + w + '" height="' + h + '" ') + '</span>';
 }
+
+let activeId = null;
 
 function renderGrid() {
   document.getElementById('country-grid').innerHTML = countries.map(c => `
     <div class="country-card${activeId === c.id ? ' active' : ''}" onclick="selectC('${c.id}')">
-      <span class="flag">${flagImg(c.flag, 40, 30)}</span>
+      <span class="flag">${flagImg(c.flag, 48, 32)}</span>
       <div class="c-name">${c.name}</div>
       <div class="c-sub">${c.sub}</div>
     </div>`).join('');
@@ -186,8 +200,8 @@ function renderDetail(c) {
     </div>` : `
     <div class="compare-block">
       <div class="compare-header">
-        <span class="flag-pair">${flagImg('kz', 24, 18)} vs ${flagImg(c.flag, 24, 18)}</span>
-        <h3>Казахстан vs ${c.name}</h3>
+        <span class="flag-pair">${flagImg('kz', 24, 16)} ↔ ${flagImg(c.flag, 24, 16)}</span>
+        <h3>Казахстан ↔ ${c.name}</h3>
       </div>
       <div class="compare-grid">
         ${c.compare.map(i => `
