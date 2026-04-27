@@ -146,7 +146,7 @@ let activeId = null;
 
 function flagImg(code, size) {
   size = size || 24;
-  return '<span class="fi fi-' + code + '" style="width:' + (size * 1.33) + 'px;height:' + size + 'px;border-radius:3px;background-size:cover;display:inline-block;vertical-align:middle;"></span>';
+  return '<img src="https://flagcdn.com/w40/' + code + '.png" width="' + Math.round(size * 1.33) + '" height="' + size + '" style="border-radius:3px;vertical-align:middle;object-fit:cover" alt="' + code + '">';
 }
 
 function renderGrid() {
