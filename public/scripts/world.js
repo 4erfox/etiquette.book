@@ -1,6 +1,6 @@
 const countries = [
   {
-    id: 'kz', flag: '🇰🇿', name: 'Казахстан', sub: 'Центральная Азия', tagline: 'Гостеприимство — закон',
+    id: 'kz', flag: 'kz', name: 'Казахстан', sub: 'Центральная Азия', tagline: 'Гостеприимство — закон',
     greeting: { title: 'Приветствие', value: 'Рукопожатие + имя-отчество', desc: 'Мужчины жмут руку. С женщиной — ждут её инициативы. Имя-отчество выражает уважение.' },
     distance: { title: 'Дистанция', value: 'Умеренная, тёплая', desc: 'Чрезмерная дистанция воспринимается как холодность. Личный контакт ценится.' },
     communication: { title: 'Стиль общения', value: 'Вежливый, непрямой', desc: 'Отказы смягчают. «Посмотрим» может означать «нет». Важно сохранить лицо партнёра.' },
@@ -15,7 +15,7 @@ const countries = [
     ]
   },
   {
-    id: 'jp', flag: '🇯🇵', name: 'Япония', sub: 'Восточная Азия', tagline: 'Ритуал важнее слов',
+    id: 'jp', flag: 'jp', name: 'Япония', sub: 'Восточная Азия', tagline: 'Ритуал важнее слов',
     greeting: { title: 'Приветствие', value: 'Поклон 15–30°', desc: 'Рукопожатие допустимо с иностранцами. Чем глубже поклон — тем больше уважения.' },
     distance: { title: 'Дистанция', value: 'Чёткая, формальная', desc: 'Физический контакт минимален. Личное пространство уважается строго.' },
     communication: { title: 'Стиль общения', value: 'Косвенный, молчание — смысл', desc: '«Немного затруднительно» — значит «нет». Пауза — знак уважения, не неловкости.' },
@@ -29,7 +29,7 @@ const countries = [
     ]
   },
   {
-    id: 'us', flag: '🇺🇸', name: 'США', sub: 'Северная Америка', tagline: 'Время — деньги',
+    id: 'us', flag: 'us', name: 'США', sub: 'Северная Америка', tagline: 'Время — деньги',
     greeting: { title: 'Приветствие', value: 'Крепкое рукопожатие', desc: 'Зрительный контакт обязателен. Улыбка — норма. Быстрый переход к имени.' },
     distance: { title: 'Дистанция', value: '60–90 см', desc: 'Личное пространство важно. Из физических контактов — только рукопожатие.' },
     communication: { title: 'Стиль общения', value: 'Прямой, оптимистичный', desc: 'Говорят то, что думают. Small talk — обязательный ритуал.' },
@@ -43,7 +43,7 @@ const countries = [
     ]
   },
   {
-    id: 'de', flag: '🇩🇪', name: 'Германия', sub: 'Западная Европа', tagline: 'Порядок, точность, доверие',
+    id: 'de', flag: 'de', name: 'Германия', sub: 'Западная Европа', tagline: 'Порядок, точность, доверие',
     greeting: { title: 'Приветствие', value: 'Рукопожатие + Herr/Frau', desc: 'Строго по фамилии до явного разрешения. Вежливое «Sie» — обязательно.' },
     distance: { title: 'Дистанция', value: 'Чёткая, профессиональная', desc: 'Личное пространство строго соблюдается. Двойное рукопожатие — фамильярность.' },
     communication: { title: 'Стиль общения', value: 'Прямой и конкретный', desc: 'Говорят прямо. Критика — норма. Подготовленность — знак уважения.' },
@@ -57,7 +57,7 @@ const countries = [
     ]
   },
   {
-    id: 'ae', flag: '🇦🇪', name: 'ОАЭ', sub: 'Ближний Восток', tagline: 'Отношения первичны',
+    id: 'ae', flag: 'ae', name: 'ОАЭ', sub: 'Ближний Восток', tagline: 'Отношения первичны',
     greeting: { title: 'Приветствие', value: 'Правая рука + взгляд', desc: 'Мужчины могут долго держать руку — это тепло. С женщиной — ждать её инициативы.' },
     distance: { title: 'Дистанция', value: 'Близкая между мужчинами', desc: 'Мужчины общаются близко. Межполовая дистанция строго соблюдается.' },
     communication: { title: 'Стиль общения', value: 'Непрямой, уважительный', desc: '«Иншаалла» может означать неопределённость. Спешить — неуважение к партнёру.' },
@@ -71,7 +71,7 @@ const countries = [
     ]
   },
   {
-    id: 'cn', flag: '🇨🇳', name: 'Китай', sub: 'Восточная Азия', tagline: 'Гуаньси — связи решают всё',
+    id: 'cn', flag: 'cn', name: 'Китай', sub: 'Восточная Азия', tagline: 'Гуаньси — связи решают всё',
     greeting: { title: 'Приветствие', value: 'Лёгкий поклон + рукопожатие', desc: 'Обращение по титулу и фамилии. Первым приветствует старший по рангу.' },
     distance: { title: 'Дистанция', value: 'Умеренная, групповая', desc: 'Личное пространство менее выражено, чем в Европе. Важен коллектив.' },
     communication: { title: 'Стиль общения', value: 'Непрямой, лицо важно', desc: 'Открытый отказ — потеря лица. Молчание и улыбка могут означать несогласие.' },
@@ -85,7 +85,7 @@ const countries = [
     ]
   },
   {
-    id: 'tr', flag: '🇹🇷', name: 'Турция', sub: 'Евразия', tagline: 'Сначала чай, потом дело',
+    id: 'tr', flag: 'tr', name: 'Турция', sub: 'Евразия', tagline: 'Сначала чай, потом дело',
     greeting: { title: 'Приветствие', value: 'Тёплое рукопожатие + взгляд', desc: 'Зрительный контакт — знак честности. Чай — с первых минут встречи.' },
     distance: { title: 'Дистанция', value: 'Близкая, тёплая', desc: 'Турки общаются ближе, чем европейцы. Отодвигаться — знак холодности.' },
     communication: { title: 'Стиль общения', value: 'Эмоциональный, личный', desc: 'Бизнес строится на доверии. Сначала — личное общение, потом договор.' },
@@ -99,7 +99,7 @@ const countries = [
     ]
   },
   {
-    id: 'ru', flag: '🇷🇺', name: 'Россия', sub: 'Восточная Европа', tagline: 'Строгость снаружи, тепло внутри',
+    id: 'ru', flag: 'ru', name: 'Россия', sub: 'Восточная Европа', tagline: 'Строгость снаружи, тепло внутри',
     greeting: { title: 'Приветствие', value: 'Крепкое рукопожатие', desc: 'Обращение по имени-отчеству. Первой женщине руку не протягивают — ждут.' },
     distance: { title: 'Дистанция', value: 'Умеренная, сдержанная', desc: 'Первоначальная холодность — не высокомерие. После знакомства — открытость.' },
     communication: { title: 'Стиль общения', value: 'Прямой, но формальный', desc: 'Прямолинейность не грубость. Переговоры могут быть жёсткими.' },
@@ -113,7 +113,7 @@ const countries = [
     ]
   },
   {
-    id: 'in', flag: '🇮🇳', name: 'Индия', sub: 'Южная Азия', tagline: 'Намасте и уважение к возрасту',
+    id: 'in', flag: 'in', name: 'Индия', sub: 'Южная Азия', tagline: 'Намасте и уважение к возрасту',
     greeting: { title: 'Приветствие', value: 'Намасте или рукопожатие', desc: 'В городской среде — рукопожатие. Намасте (ладони вместе) — универсально и уважительно.' },
     distance: { title: 'Дистанция', value: 'Умеренная', desc: 'Между мужчинами — близко. Физический контакт с женщинами — минимален.' },
     communication: { title: 'Стиль общения', value: 'Непрямой, уважительный', desc: '«Да» не всегда согласие. Кивок головой — часто просто «я слушаю».' },
@@ -127,7 +127,7 @@ const countries = [
     ]
   },
   {
-    id: 'kr', flag: '🇰🇷', name: 'Корея', sub: 'Восточная Азия', tagline: 'Иерархия определяет всё',
+    id: 'kr', flag: 'kr', name: 'Корея', sub: 'Восточная Азия', tagline: 'Иерархия определяет всё',
     greeting: { title: 'Приветствие', value: 'Поклон + рукопожатие', desc: 'Первым кланяется младший. Рукопожатие: левая рука поддерживает правую.' },
     distance: { title: 'Дистанция', value: 'Формальная, по рангу', desc: 'Иерархия определяет всё: кто заходит первым, кто садится, кто говорит.' },
     communication: { title: 'Стиль общения', value: 'Косвенный, по иерархии', desc: 'Младший не возражает старшему прямо. Молчание в ответ на просьбу — часто отказ.' },
@@ -144,10 +144,15 @@ const countries = [
 
 let activeId = null;
 
+function flagImg(code, w, h) {
+  w = w || 40; h = h || 30;
+  return '<img src="https://flagcdn.com/' + w + 'x' + h + '/' + code + '.png" alt="' + code.toUpperCase() + '" style="width:' + w + 'px;height:' + h + 'px;object-fit:cover;border-radius:3px;">';
+}
+
 function renderGrid() {
   document.getElementById('country-grid').innerHTML = countries.map(c => `
     <div class="country-card${activeId === c.id ? ' active' : ''}" onclick="selectC('${c.id}')">
-      <span class="flag">${c.flag}</span>
+      <span class="flag">${flagImg(c.flag, 40, 30)}</span>
       <div class="c-name">${c.name}</div>
       <div class="c-sub">${c.sub}</div>
     </div>`).join('');
@@ -181,7 +186,7 @@ function renderDetail(c) {
     </div>` : `
     <div class="compare-block">
       <div class="compare-header">
-        <span class="flag-pair">🇰🇿 vs ${c.flag}</span>
+        <span class="flag-pair">${flagImg('kz', 24, 18)} vs ${flagImg(c.flag, 24, 18)}</span>
         <h3>Казахстан vs ${c.name}</h3>
       </div>
       <div class="compare-grid">
@@ -189,8 +194,8 @@ function renderDetail(c) {
           <div class="compare-item">
             <div class="ci-label">${i.label}</div>
             <div class="ci-row">
-              <div class="ci-entry"><span class="flag-sm">🇰🇿</span>${i.kz}</div>
-              <div class="ci-entry"><span class="flag-sm">${c.flag}</span>${i.other}</div>
+              <div class="ci-entry"><span class="flag-sm">${flagImg('kz', 18, 14)}</span>${i.kz}</div>
+              <div class="ci-entry"><span class="flag-sm">${flagImg(c.flag, 18, 14)}</span>${i.other}</div>
             </div>
           </div>`).join('')}
       </div>
@@ -199,7 +204,7 @@ function renderDetail(c) {
   document.getElementById('detail-inner').innerHTML = `
     <div class="detail-header">
       <div class="dh-left">
-        <span class="detail-flag">${c.flag}</span>
+        <span class="detail-flag">${flagImg(c.flag, 48, 36)}</span>
         <div>
           <div class="detail-title">${c.name}</div>
           <div class="detail-tagline">${c.tagline}</div>
