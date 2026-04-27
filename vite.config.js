@@ -31,7 +31,7 @@ export default defineConfig({
   // Настройка алиасов для импортов
   resolve: {
     alias: {
-      '/admin': path.resolve(__dirname, 'admin'),
+      '/admin': path.resolve(__dirname, 'public', 'admin'),
     }
   },
   // Оптимизация зависимостей

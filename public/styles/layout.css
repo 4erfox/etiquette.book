@@ -473,23 +473,24 @@ ol ol           { list-style-type: lower-alpha; margin-top: 0.75rem; margin-bott
 }
 
 /* ============================================================
-   ТАБЛИЦА ЭТИКЕТА (используется на странице phone-etiquette)
+   УНИВЕРСАЛЬНЫЕ СТИЛИ ДЛЯ MARKDOWN ТАБЛИЦ
+   (Чтобы таблицы из редактора выглядели так же, как "Таблица этикета")
    ============================================================ */
-.table-wrapper {
-    overflow-x: auto; /* горизонтальный скролл на узких экранах */
-    margin: 2rem 0;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background: var(--bg-secondary);
-}
-.etiquette-table {
+
+/* Контейнер для прокрутки, если таблица широкая */
+.main-content table {
     width: 100%;
     border-collapse: collapse;
+    margin: 2rem 0;
     font-family: 'Literata', serif;
     font-size: 0.9375rem;
-    line-height: 1.5;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    border-radius: 8px; /* может не сработать без overflow:hidden */
+    overflow: hidden;
 }
-.etiquette-table th {
+
+.main-content table th {
     background: var(--sidebar-bg);
     padding: 1.25rem 1rem;
     text-align: left;
@@ -501,69 +502,21 @@ ol ol           { list-style-type: lower-alpha; margin-top: 0.75rem; margin-bott
     color: var(--accent-color);
     border-bottom: 2px solid var(--border-color);
 }
-.etiquette-table td {
+
+.main-content table td {
     padding: 1.25rem 1rem;
     border-bottom: 1px solid var(--border-color);
     vertical-align: top;
-}
-.etiquette-table tr:last-child td {
-    border-bottom: none; /* последняя строка без нижней линии */
-}
-
-/* Левая колонка «Не стоит говорить» */
-.etiquette-table td:first-child {
-    color: var(--text-secondary);
-    font-weight: 500;
-    width: 35%;
-    background: rgba(193, 80, 46, 0.02);
-    border-right: 1px solid var(--border-color);
-}
-
-/* Правая колонка «Лучше сказать» */
-.etiquette-table td:last-child {
     color: var(--text-primary);
 }
 
-/* ============================================================
-   АДАПТИВ: планшет (до 1024px)
-   Переходим в одноколоночный макет
-   ============================================================ */
-@media (max-width: 1024px) {
-    .page-wrapper {
-        flex-direction: column; /* TOC идёт сверху, контент под ним */
-    }
-    .toc-sidebar {
-        position: relative; /* снимаем sticky — в колонке он не нужен */
-        top: 0;
-        width: 100%;
-        max-height: none;
-        margin-bottom: 2rem;
-    }
+.main-content table tr:last-child td {
+    border-bottom: none;
 }
 
-/* ============================================================
-   АДАПТИВ: мобильный (до 768px)
-   Уменьшаем шрифты, убираем выравнивание по ширине
-   ============================================================ */
-@media (max-width: 768px) {
-    .page-wrapper {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        padding-top: 80px;
-    }
-    .page-title       { font-size: 2rem; }
-    .section-title    { font-size: 1.5rem; }
-    .subsection-title { font-size: 1.25rem; }
-
-    .section-text {
-        font-size: 1rem;
-        text-align: left; /* на мобиле justify выглядит хуже */
-    }
-
-    .content-list li,
-    ul li, ol li {
-        font-size: 1rem;
-    }
+/* Добавим легкое выделение нечетных строк, чтобы таблица читалась лучше */
+.main-content table tr:nth-child(even) {
+    background: rgba(0, 0, 0, 0.01);
 }
 
 /* ============================================================

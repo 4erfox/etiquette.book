@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>etiquette-book</title>
+    <title>etiquette-book | Деловой этикет в Казахстане</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles/index.css">
     <style>
-  .hero { pointer-events: none; }
-  .hero .content { pointer-events: auto; }
-</style>
+        .hero { pointer-events: none; }
+        .hero .content { pointer-events: auto; }
+    </style>
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="shortcut icon" href="/favicon.png">
-    <!-- Добавьте в <head> перед закрывающим тегом -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
     <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="/styles/flag-icons.min.css">
 
-    <meta name="description" content="Введение в профессиональную культуру">
+    <meta name="description" content="Систематизированный материал по нормам делового поведения и профессиональной коммуникации в Казахстане">
     <meta name="robots" content="index, follow">
 </head>
 <body>
@@ -56,91 +56,71 @@
             </div>
         </div>
 
+        <!-- ================= НОВОЕ БОКОВОЕ МЕНЮ ================= -->
         <div class="sidebar-content">
-            <div class="menu-section" data-section="intro">
-                <div class="menu-section-title"><div class="menu-section-title-content">
-                    <span class="menu-section-title-text">Введение</span>
-                    <div class="menu-section-controls">
-                        <span class="menu-section-counter">2</span>
-                        <div class="menu-section-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-                    </div></div></div>
+            <!-- 🚀 Начало пути -->
+            <div class="menu-section" data-section="start">
+                <div class="menu-section-title">
+                    <div class="menu-section-title-content">
+                        <span class="menu-section-title-text">🚀 Начало пути</span>
+                        <div class="menu-section-controls">
+                            <span class="menu-section-counter">4</span>
+                            <div class="menu-section-arrow">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="menu-items">
-                    <a href="/pages/onepage.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">О деловом этикете</a>
-                    <a href="/pages/why-needed.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Зачем это нужно</a>
+                    <a href="/pages/onepage.html" class="menu-item">Что такое деловой этикет</a>
+                    <a href="/pages/why-needed.html" class="menu-item">Почему это важно</a>
+                    <a href="/pages/national-features.html" class="menu-item">Особенности деловой культуры Казахстана</a>
+                    <a href="/pages/respect-hierarchy.html" class="menu-item">Иерархия и нормы взаимодействия</a>
                 </div>
             </div>
 
-            <div class="menu-section" data-section="basics">
-                <div class="menu-section-title"><div class="menu-section-title-content">
-                    <span class="menu-section-title-text">Основы делового этикета</span>
-                    <div class="menu-section-controls">
-                        <span class="menu-section-counter">4</span>
-                        <div class="menu-section-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-                    </div></div></div>
+            <!-- 🤝 День встречи -->
+            <div class="menu-section" data-section="meeting">
+                <div class="menu-section-title">
+                    <div class="menu-section-title-content">
+                        <span class="menu-section-title-text">🤝 День встречи</span>
+                        <div class="menu-section-controls">
+                            <span class="menu-section-counter">4</span>
+                            <div class="menu-section-arrow">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="menu-items">
-                    <a href="/pages/business-attire.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Деловая одежда</a>
-                    <a href="/pages/greetings-introductions.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Приветствия и представления</a>
-                    <a href="/pages/business-correspondence.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Деловая переписка</a>
-                    <a href="/pages/phone-etiquette.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Телефонный этикет</a>
+                    <a href="/pages/meeting-preparation.html" class="menu-item">Подготовка к деловой встрече</a>
+                    <a href="/pages/conducting-negotiations.html" class="menu-item">Ведение переговоров</a>
+                    <a href="/pages/business-lunch.html" class="menu-item">Деловой обед</a>
+                    <a href="/pages/video-conferences.html" class="menu-item">Онлайн-коммуникация</a>
                 </div>
             </div>
 
-            <div class="menu-section" data-section="meetings">
-                <div class="menu-section-title"><div class="menu-section-title-content">
-                    <span class="menu-section-title-text">Деловые встречи</span>
-                    <div class="menu-section-controls">
-                        <span class="menu-section-counter">3</span>
-                        <div class="menu-section-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-                    </div></div></div>
-                <div class="menu-items">
-                    <a href="/pages/meeting-preparation.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Подготовка к встрече</a>
-                    <a href="/pages/conducting-negotiations.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Проведение переговоров</a>
-                    <a href="/pages/business-lunch.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Деловой обед</a>
+            <!-- ⚠️ Сложные моменты -->
+            <div class="menu-section" data-section="problems">
+                <div class="menu-section-title">
+                    <div class="menu-section-title-content">
+                        <span class="menu-section-title-text">⚠️ Сложные ситуации</span>
+                        <div class="menu-section-controls">
+                            <span class="menu-section-counter">3</span>
+                            <div class="menu-section-arrow">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="menu-section" data-section="culture">
-                <div class="menu-section-title"><div class="menu-section-title-content">
-                    <span class="menu-section-title-text">Деловая культура Казахстана</span>
-                    <div class="menu-section-controls">
-                        <span class="menu-section-counter">3</span>
-                        <div class="menu-section-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-                    </div></div></div>
                 <div class="menu-items">
-                    <a href="/pages/history-traditions.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">История и традиции</a>
-                    <a href="/pages/national-features.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Национальные особенности</a>
-                    <a href="/pages/respect-hierarchy.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Уважение к иерархии</a>
-                </div>
-            </div>
-
-            <div class="menu-section" data-section="online">
-                <div class="menu-section-title"><div class="menu-section-title-content">
-                    <span class="menu-section-title-text">Онлайн-коммуникация</span>
-                    <div class="menu-section-controls">
-                        <span class="menu-section-counter">3</span>
-                        <div class="menu-section-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-                    </div></div></div>
-                <div class="menu-items">
-                    <a href="/pages/email-etiquette.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Email этикет</a>
-                    <a href="/pages/video-conferences.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Видеоконференции</a>
-                    <a href="/pages/social-media-business.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Социальные сети в бизнесе</a>
-                </div>
-            </div>
-
-            <div class="menu-section" data-section="conflicts">
-                <div class="menu-section-title"><div class="menu-section-title-content">
-                    <span class="menu-section-title-text">Конфликты и сложные ситуации</span>
-                    <div class="menu-section-controls">
-                        <span class="menu-section-counter">3</span>
-                        <div class="menu-section-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-                    </div></div></div>
-                <div class="menu-items">
-                    <a href="/pages/conflict-resolution.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Урегулирование конфликта</a>
-                    <a href="/pages/criticism-feedback.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Критика и обратная связь</a>
-                    <a href="/pages/apologies.html" class="menu-item" style="text-decoration:none;color:inherit;display:block">Извинения</a>
+                    <a href="/pages/conflict-resolution.html" class="menu-item">Разрешение конфликтов</a>
+                    <a href="/pages/criticism-feedback.html" class="menu-item">Критика и обратная связь</a>
+                    <a href="/pages/apologies.html" class="menu-item">Этика извинений</a>
                 </div>
             </div>
         </div>
+        <!-- ================= КОНЕЦ НОВОГО МЕНЮ ================= -->
     </aside>
 
     <div class="contacts-menu">
@@ -154,83 +134,74 @@
             </button>
         </div>
         <div class="contacts-content">
-    <!-- Контакты загружаются через JavaScript -->
-        <div style="text-align: center; padding: 1rem; color: #999;">Загрузка...</div>
-</div>
+            <div style="text-align: center; padding: 1rem; color: #999;">Загрузка...</div>
+        </div>
     </div>
 
     <section class="hero">
         <div class="content">
             <div class="accent-line fade-in fade-in-1"></div>
-            <h1 class="fade-in fade-in-2">аааа</h1>
-            <p class="subtitle fade-in fade-in-3">Введение в профессиональную культуру</p>
+            <h1 class="fade-in fade-in-2">
+                Деловой этикет в Казахстане
+            </h1>
+            <p class="subtitle fade-in fade-in-3">
+                Коротко и по делу: от первых слов до сложных ситуаций в переговорах.
+            </p>
         </div>
     </section>
 
     <div class="materials-panel" id="materials-panel">
-    <div class="materials-header">
-        <span class="materials-title">Материалы</span>
-        <button class="materials-close-btn" id="materials-close-btn">
-            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
+        <div class="materials-header">
+            <span class="materials-title">Материалы</span>
+            <button class="materials-close-btn" id="materials-close-btn">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="materials-content">
+            <div class="materials-section">
+                <div class="materials-section-title">Книги</div>
+            </div>
+            <div class="materials-section">
+                <div class="materials-section-title">Видео</div>
+            </div>
+            <div class="materials-section">
+                <div class="materials-section-title">Задачи</div>
+            </div>
+            <div class="materials-section">
+                <div class="materials-section-title">Флеш-карточки</div>
+            </div>
+            <div class="materials-section">
+                <a href="/materials/world-etiquette.html" class="materials-section-title" style="text-decoration:none;color:inherit;display:block;cursor:pointer;">🌍 Этикет без границ</a>
+            </div>
+            <div class="materials-section">
+                <a href="/materials/quiz.html" class="materials-section-title" style="text-decoration:none;color:inherit;display:block;cursor:pointer;">🎯 Тест: проверьте себя</a>
+            </div>
+        </div>
     </div>
-    <div class="materials-content">
-        <div class="materials-section">
-            <div class="materials-section-title">
-                Книги
-            </div>
-        </div>
-        <div class="materials-section">
-            <div class="materials-section-title">
-                Видео
-            </div>
-        </div>
-        <div class="materials-section">
-            <div class="materials-section-title">
-                Задачи
-            </div>
-        </div>
-        <div class="materials-section">
-            <div class="materials-section-title">
-                Флеш-карточки
-            </div>
-        </div>
-      <div class="materials-section">
-          <a href="/materials/world-etiquette.html" class="materials-section-title" style="text-decoration:none;color:inherit;display:block;cursor:pointer;">
-        Этикет без границ
-        </a>
-      </div>
-      <div class="materials-section">
-         <a href="/materials/quiz.html" class="materials-section-title" style="text-decoration:none;color:inherit;display:block;cursor:pointer;">
-        Тест
-          </a>
-      </div>
-    </div>
-</div>
 
     <nav class="bottom-nav">
-    <div class="nav-container">
-    <button class="nav-btn active">
-        <svg viewBox="0 0 24 24">
-            <path d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-        <span>Содержание</span>
-    </button>
-    <button class="nav-btn" id="search-btn">
-        <svg viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.35-4.35"/>
-        </svg>
-        <span>Поиск</span>
-    </button>
-    <button class="nav-btn" id="materials-btn">
-        <svg viewBox="0 0 24 24">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
-        <span>Материалы</span>
-    </button>
-    </div>
-</nav>
+        <div class="nav-container">
+            <button class="nav-btn active">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                <span>Содержание</span>
+            </button>
+            <button class="nav-btn" id="search-btn">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <span>Поиск</span>
+            </button>
+            <button class="nav-btn" id="materials-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span>Материалы</span>
+            </button>
+        </div>
+    </nav>
 
     <script type="module" src="/scripts/index.js"></script>
     <script type="module" src="/admin/admin-panel.js"></script>

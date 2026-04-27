@@ -160,7 +160,7 @@ function renderMarkdown(md, tocIds) {
   let i        = 0;
   let sectionIdx = 0;
   let inSection = false;
-  let firstParaInSection = false; // следующий абзац получит dropcap
+  let firstParaInSection = false;
 
   function closeSection() {
     if (inSection) { html.push('</section>'); inSection = false; }
@@ -216,11 +216,21 @@ function renderMarkdown(md, tocIds) {
       continue;
     }
 
+    // ── ТАБЛИЦЫ ─────────────────────────────────────────────────────────────
+    if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
+      const tableRows = [];
+      while (i < lines.length && lines[i].trim().startsWith('|') && lines[i].trim().endsWith('|')) {
+        tableRows.push(lines[i]);
+        i++;
+      }
+      html.push(renderTable(tableRows));
+      continue;
+    }
+
     // ── Список (ul) — поддержка -, –, —, * как маркеров ─────────────────────
     if (line.match(/^[-–—*] .+/)) {
       const items = [];
       while (i < lines.length && lines[i].match(/^[-–—*] .+/)) {
-        // Срезаем маркер (1 символ) и пробел
         items.push(lines[i].slice(2).trim());
         i++;
       }
@@ -260,21 +270,67 @@ function renderMarkdown(md, tocIds) {
 
     // ── Обычный абзац ────────────────────────────────────────────────────────
     const paraLines = [];
-    while (i < lines.length && lines[i].trim() !== '' && !lines[i].match(/^#{1,4} /) && !lines[i].startsWith('> ') && !lines[i].match(/^[-–—*] /) && !lines[i].match(/^\d+\. /)) {
+    while (i < lines.length && 
+           lines[i].trim() !== '' && 
+           !lines[i].match(/^#{1,4} /) && 
+           !lines[i].startsWith('> ') && 
+           !lines[i].match(/^[-–—*] /) && 
+           !lines[i].match(/^\d+\. /) &&
+           !(lines[i].trim().startsWith('|') && lines[i].trim().endsWith('|'))) {
       paraLines.push(lines[i]);
       i++;
     }
     const paraText = paraLines.join(' ').trim();
     if (paraText) {
-      // Dropcap — всегда на первом абзаце секции, независимо от того что идёт после
       const cls = firstParaInSection ? 'section-text dropcap' : 'section-text';
-      firstParaInSection = false; // сбрасываем флаг — только первый абзац получает dropcap
+      firstParaInSection = false;
       html.push(`<p class="${cls}">${inlineRender(paraText)}</p>`);
     }
   }
 
   closeSection();
   return html.join('\n');
+}
+
+// ── Рендер таблицы из Markdown в HTML ─────────────────────────────────────────
+function renderTable(rows) {
+    if (!rows || rows.length === 0) return '';
+    
+    const parsedRows = [];
+    let hasHeader = false;
+    
+    for (let idx = 0; idx < rows.length; idx++) {
+        const row = rows[idx].trim();
+        let cells = row.slice(1, -1).split('|');
+        cells = cells.map(cell => cell.trim());
+        
+        // Проверяем строку-разделитель (|---|)
+        const isSeparator = cells.every(cell => /^[-:]+$/.test(cell));
+        if (isSeparator) {
+            hasHeader = true;
+            continue;
+        }
+        
+        parsedRows.push(cells);
+    }
+    
+    if (parsedRows.length === 0) return '';
+    
+    let html = '<div class="table-wrapper"><table class="content-table">';
+    
+    parsedRows.forEach((row, rowIdx) => {
+        const isHeader = hasHeader && rowIdx === 0;
+        const tag = isHeader ? 'th' : 'td';
+        
+        html += '<tr>';
+        row.forEach(cell => {
+            html += `<${tag}>${inlineRender(cell)}</${tag}>`;
+        });
+        html += '</tr>';
+    });
+    
+    html += '</table></div>';
+    return html;
 }
 
 // ── Blockquote → info-box или quote-block ────────────────────────────────────
@@ -287,13 +343,12 @@ function renderBlockquote(lines) {
     const parts = ['<div class="info-box">'];
     let titleDone = false;
     const listItems = [];
-    let hasTitle = false;
 
     lines.forEach(l => {
       if (l.startsWith('**') && !titleDone) {
         const t = l.replace(/\*\*/g, '').trim().replace(/:$/, '');
         parts.push(`<h3 class="info-box-title">${t}</h3>`);
-        titleDone = true; hasTitle = true;
+        titleDone = true;
       } else if (l.match(/^[-–—*] /)) {
         listItems.push(l.slice(2).trim());
       } else if (l.trim()) {
@@ -381,7 +436,6 @@ function initTocScroll() {
     updateActive(); // запускаем сразу
   });
 }
-
 
 // ── Навигация Предыдущая / Следующая ─────────────────────────────────────────
 async function renderPageNav(currentSlug, currentSection) {

@@ -148,10 +148,10 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc:  ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
+      scriptSrc:  ["'self'", "'unsafe-inline'", "'unsafe-eval'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
       styleSrc:   ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
-      fontSrc:    ["'self'", "fonts.gstatic.com", "fonts.googleapis.com"],
-      imgSrc:     ["'self'", "data:", "blob:"],
+      fontSrc:    ["'self'", "fonts.gstatic.com", "fonts.googleapis.com", "data:"],
+      imgSrc:     ["'self'", "data:", "blob:", "*"], // Разрешаем картинки отовсюду
       connectSrc: ["'self'"],
     },
   },
@@ -187,7 +187,7 @@ app.use(express.json({ limit: '10mb' }));
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   message: { ok: false, error: 'TOO_MANY_REQUESTS', message: 'Слишком много попыток. Попробуй через 15 минут.' },
@@ -195,7 +195,7 @@ const authLimiter = rateLimit({
 
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 300,
+  max: 1000,
   standardHeaders: true,
   legacyHeaders: false,
   message: { ok: false, error: 'TOO_MANY_REQUESTS', message: 'Слишком много запросов.' },

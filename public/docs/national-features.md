@@ -1,5 +1,5 @@
 ---
-title: "Национальные особенности"
+title: "Как ведут себя в Казахстане"
 description: "Введение в"
 section: culture
 read_time: "14 минут"

@@ -9,6 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "server": "node server.js",
+    "dev:all": "concurrently \"npm run server\" \"npm run dev\"",
     "server:dev": "nodemon server.js",
     "admin": "node admin-server.js",
     "start": "concurrently \"npm run server\" \"npm run dev\""
