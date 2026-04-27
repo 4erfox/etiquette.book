@@ -41,7 +41,6 @@ function loadEasyMDE() {
         const t = getT();
         const style = document.createElement('style');
         style.innerHTML = `
-            /* ── Контейнер редактора ── */
             .EasyMDEContainer {
                 flex: 1;
                 display: flex;
@@ -50,125 +49,137 @@ function loadEasyMDE() {
                 height: 100%;
             }
 
-            /* ── Тулбар sticky — не уезжает при скролле текста ── */
+            /* ТУЛБАР - ЯРКИЙ И ВИДИМЫЙ */
             .EasyMDEContainer .editor-toolbar {
                 position: sticky;
                 top: 0;
                 z-index: 10;
-                background: ${t.surface};
-                border-color: ${t.border};
-                border-radius: 0;
+                background: #2d2d2d !important;
+                border-bottom: 2px solid #555 !important;
+                border-radius: 0 !important;
                 opacity: 1;
                 flex-shrink: 0;
+                padding: 6px 8px;
             }
+            
             .EasyMDEContainer .editor-toolbar button {
-                color: ${t.fgMuted} !important;
+                color: #e0e0e0 !important;
+                background: #3d3d3d !important;
+                border: 1px solid #555 !important;
+                border-radius: 4px !important;
+                margin: 0 2px;
+                padding: 5px 8px;
+                font-size: 12px;
             }
+            
             .EasyMDEContainer .editor-toolbar button:hover {
-                background: ${t.surfaceHov};
+                background: #4ec9b0 !important;
+                color: #1e1e1e !important;
+                border-color: #4ec9b0 !important;
             }
+            
             .EasyMDEContainer .editor-toolbar i.separator {
-                border-color: ${t.border};
+                border-left-color: #555 !important;
+                border-right-color: #555 !important;
+                margin: 0 4px;
+            }
+            
+            .EasyMDEContainer .editor-toolbar:before,
+            .EasyMDEContainer .editor-toolbar:after {
+                background: none !important;
             }
 
-            /* ── CodeMirror — тёмно-серый фон, светлый текст ── */
+            /* CodeMirror - темный фон */
             .EasyMDEContainer .CodeMirror {
                 flex: 1;
-                background: #1e1e1e;
-                color: #d4d4d4;
-                border-color: ${t.border};
-                font-family: ui-monospace, 'Cascadia Code', monospace;
+                background: #1a1a1a !important;
+                color: #e0e0e0 !important;
+                border-color: #444 !important;
+                font-family: monospace;
                 font-size: 13px;
                 line-height: 1.7;
                 height: 100% !important;
-                min-height: 0 !important;
             }
-            .EasyMDEContainer .CodeMirror-scroll {
-                height: 100%;
-                padding-bottom: 0 !important;
-                margin-bottom: 0 !important;
-                min-height: 0 !important;
+            
+            .EasyMDEContainer .CodeMirror-gutters {
+                background: #222 !important;
+                border-right-color: #444 !important;
             }
-            .EasyMDEContainer .CodeMirror-sizer {
-                margin-bottom: 0 !important;
+            
+            .EasyMDEContainer .CodeMirror-linenumber {
+                color: #888 !important;
             }
-
-            /* ── Курсор ── */
+            
             .EasyMDEContainer .CodeMirror-cursor {
-                border-left: 2px solid #d4d4d4;
+                border-left: 2px solid #4ec9b0 !important;
+            }
+            
+            .EasyMDEContainer .CodeMirror-selected {
+                background: #264f78 !important;
             }
 
-            /* ── Подсветка синтаксиса Markdown ── */
-            .EasyMDEContainer .cm-header   { color: #ce9178; font-weight: 700; }
-            .EasyMDEContainer .cm-strong   { color: #dcdcaa; font-weight: 700; }
-            .EasyMDEContainer .cm-em       { color: #9cdcfe; font-style: italic; }
-            .EasyMDEContainer .cm-link     { color: #4ec9b0; }
-            .EasyMDEContainer .cm-url      { color: #569cd6; }
-            .EasyMDEContainer .cm-quote    { color: #6a9955; }
-            .EasyMDEContainer .cm-comment  { color: #6a9955; }
+            /* Подсветка синтаксиса */
+            .EasyMDEContainer .cm-header { color: #ce9178 !important; font-weight: 700; }
+            .EasyMDEContainer .cm-strong { color: #dcdcaa !important; font-weight: 700; }
+            .EasyMDEContainer .cm-em { color: #9cdcfe !important; font-style: italic; }
+            .EasyMDEContainer .cm-link { color: #4ec9b0 !important; }
+            .EasyMDEContainer .cm-url { color: #569cd6 !important; }
+            .EasyMDEContainer .cm-quote { color: #6a9955 !important; }
+            .EasyMDEContainer .cm-comment { color: #6a9955 !important; }
 
-            /* ── Preview — тёмный фон ── */
+            /* Preview */
             .EasyMDEContainer .editor-preview {
-                background: #1e1e1e !important;
-                color: #d4d4d4 !important;
-                border-color: ${t.border} !important;
+                background: #1a1a1a !important;
+                color: #e0e0e0 !important;
+                border-color: #444 !important;
             }
+            
             .EasyMDEContainer .editor-preview h1,
             .EasyMDEContainer .editor-preview h2,
             .EasyMDEContainer .editor-preview h3 {
-                color: #ce9178;
-                border-color: ${t.border};
+                color: #ce9178 !important;
             }
-            .EasyMDEContainer .editor-preview a { color: #4ec9b0; }
-            .EasyMDEContainer .editor-preview blockquote {
-                border-left-color: ${t.border};
-                color: #888;
-            }
+            
+            .EasyMDEContainer .editor-preview a { color: #4ec9b0 !important; }
             .EasyMDEContainer .editor-preview code {
-                background: #2d2d2d;
-                color: #ce9178;
-                border-radius: 3px;
-                padding: 1px 4px;
+                background: #2d2d2d !important;
+                color: #ce9178 !important;
             }
 
-            /* ── Статусбар ── */
+            /* Статусбар */
             .EasyMDEContainer .editor-statusbar {
-                background: ${t.surface};
-                color: ${t.fgSub};
-                border-color: ${t.border};
+                background: #2d2d2d !important;
+                color: #aaa !important;
+                border-color: #444 !important;
                 padding: 4px 10px;
                 flex-shrink: 0;
             }
 
-            /* ── Выделение текста ── */
-            .EasyMDEContainer .CodeMirror-selected { background: #264f78 !important; }
-            .EasyMDEContainer .CodeMirror-focused .CodeMirror-selected { background: #264f78 !important; }
-
-            /* ── Скроллбары и спиннер ── */
             .adm-spin { animation: spin 1s linear infinite; }
             @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-            .adm-scroll::-webkit-scrollbar       { width: 6px; height: 6px; }
-            .adm-scroll::-webkit-scrollbar-track { background: ${t.surface}; border-radius: 3px; }
-            .adm-scroll::-webkit-scrollbar-thumb { background: ${t.borderStrong}; border-radius: 3px; }
+            
+            .adm-scroll::-webkit-scrollbar { width: 6px; }
+            .adm-scroll::-webkit-scrollbar-track { background: #2d2d2d; border-radius: 3px; }
+            .adm-scroll::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
         `;
         document.head.appendChild(style);
     });
 }
 
-// MD Редактор (без side-by-side)
+// MD Редактор
 async function openMdEditor(container, slug, title, onClose) {
     const t = getT();
     await loadEasyMDE();
 
     const overlay = document.createElement('div');
-    overlay.style.cssText = `position:absolute;inset:0;z-index:30;background:#1e1e1e;display:flex;flex-direction:column;overflow:hidden;`;
+    overlay.style.cssText = `position:absolute;inset:0;z-index:30;background:#1a1a1a;display:flex;flex-direction:column;overflow:hidden;`;
     
     overlay.innerHTML = `
-        <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid ${t.border};background:${t.surface};flex-shrink:0">
-            <button id="me-back" style="display:flex;align-items:center;gap:5px;padding:5px 9px;border-radius:6px;border:1px solid ${t.border};background:transparent;color:${t.fgMuted};cursor:pointer;font-size:11px;font-family:${t.mono}">${IC.back} Назад</button>
-            <span style="flex:1;font-size:11px;font-weight:600;color:${t.fg};font-family:${t.mono};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(title)}</span>
-            <span id="me-dirty" style="display:none;font-size:10px;color:${t.warning};font-family:${t.mono}">● не сохранено</span>
-            <button id="me-save" style="display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;border:1px solid ${t.borderStrong};background:${t.surfaceHov};color:${t.fg};cursor:pointer;font-size:11px;font-family:${t.mono};font-weight:600">${IC.save} Сохранить</button>
+        <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid #444;background:#2d2d2d;flex-shrink:0">
+            <button id="me-back" style="display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1px solid #555;background:#3d3d3d;color:#e0e0e0;cursor:pointer;font-size:11px">${IC.back} Назад</button>
+            <span style="flex:1;font-size:12px;font-weight:600;color:#e0e0e0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(title)}</span>
+            <span id="me-dirty" style="display:none;font-size:10px;color:#f0a500">● не сохранено</span>
+            <button id="me-save" style="display:flex;align-items:center;gap:5px;padding:6px 16px;border-radius:6px;border:1px solid #4ec9b0;background:#4ec9b0;color:#1a1a1a;cursor:pointer;font-size:11px;font-weight:600">${IC.save} Сохранить</button>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;overflow:auto;min-height:0;" id="mde-anchor">
             <textarea id="me-editor" style="display:none;"></textarea>
@@ -186,10 +197,9 @@ async function openMdEditor(container, slug, title, onClose) {
         const { content } = await bridge.readDoc(slug);
         
         const textarea = overlay.querySelector('#me-editor');
-        textarea.value = content;
+        textarea.value = content || '';
         textarea.style.display = '';
         
-        // Убрали "side-by-side" из тулбара
         easyMDE = new EasyMDE({
             element: textarea,
             spellChecker: false,
@@ -203,12 +213,10 @@ async function openMdEditor(container, slug, title, onClose) {
             minHeight: "100%",
         });
 
-        // Убираем авто-высоту CodeMirror и даём ей заполнить контейнер
         const anchorEl = overlay.querySelector('#mde-anchor');
         const cmWrapper = easyMDE.codemirror.getWrapperElement();
         cmWrapper.style.cssText = 'height:100%;min-height:0;flex:1;';
         
-        // EasyMDEContainer должен быть flex-колонкой
         const mdeContainer = anchorEl.querySelector('.EasyMDEContainer');
         if (mdeContainer) {
             mdeContainer.style.cssText = 'flex:1;display:flex;flex-direction:column;min-height:0;height:100%;';
@@ -236,12 +244,12 @@ async function openMdEditor(container, slug, title, onClose) {
             dirtyEl.style.display = 'none';
             const originalHtml = saveBtn.innerHTML;
             saveBtn.innerHTML = '✓ Сохранено';
-            saveBtn.style.color = t.success;
+            saveBtn.style.background = '#6a9955';
             setTimeout(() => {
                 saveBtn.innerHTML = originalHtml;
-                saveBtn.style.color = t.fg;
+                saveBtn.style.background = '#4ec9b0';
             }, 2000);
-            toast.success('Сохранено: docs/' + slug + '.md');
+            toast.success('Сохранено');
         } catch(e) {
             toast.error('Ошибка: ' + e.message);
         }
@@ -283,7 +291,7 @@ export function renderPagesPanel(container) {
     function renderLoading() {
         const t = getT();
         container.innerHTML = `
-            <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;color:${t.fgMuted}">
+            <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;color:#aaa">
                 <svg class="adm-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="12" y1="2" x2="12" y2="6"/>
                     <line x1="12" y1="18" x2="12" y2="22"/>
@@ -294,7 +302,7 @@ export function renderPagesPanel(container) {
                     <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/>
                     <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/>
                 </svg>
-                <span style="font-size:12px;font-family:${t.mono}">Загрузка страниц...</span>
+                <span style="font-size:12px">Загрузка страниц...</span>
             </div>
         `;
     }
@@ -302,9 +310,9 @@ export function renderPagesPanel(container) {
     function renderError(msg) {
         const t = getT();
         container.innerHTML = `
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:32px;color:${t.danger};text-align:center">
-                <div style="font-size:12px;font-family:${t.mono};max-width:300px">⚠️ ${esc(msg)}</div>
-                <button id="adm-err-reload" style="padding:8px 16px;border-radius:8px;border:1px solid ${t.border};background:${t.surfaceHov};color:${t.fg};cursor:pointer;font-size:12px;font-family:${t.mono}">⟳ Повторить</button>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:32px;color:#e08080;text-align:center">
+                <div style="font-size:12px;max-width:300px">⚠️ ${esc(msg)}</div>
+                <button id="adm-err-reload" style="padding:8px 16px;border-radius:8px;border:1px solid #555;background:#3d3d3d;color:#e0e0e0;cursor:pointer;font-size:12px">⟳ Повторить</button>
             </div>
         `;
         container.querySelector('#adm-err-reload')?.addEventListener('click', load);
@@ -316,10 +324,10 @@ export function renderPagesPanel(container) {
         
         container.innerHTML = `
             <div style="display:flex;flex-direction:column;height:100%;">
-                <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid ${t.border};background:${t.surface};flex-shrink:0;">
-                    <span style="font-size:11px;color:${t.fgSub};font-family:${t.mono}">📄 ${total} страниц · EasyMDE</span>
+                <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #444;background:#2d2d2d;flex-shrink:0;">
+                    <span style="font-size:11px;color:#aaa">📄 ${total} страниц · EasyMDE</span>
                     <div style="flex:1"></div>
-                    <button id="adm-reload" style="display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1px solid ${t.border};background:transparent;color:${t.fgMuted};cursor:pointer;font-size:11px;font-family:${t.mono};transition:all 0.2s" onmouseover="this.style.background='${t.surfaceHov}'" onmouseout="this.style.background='transparent'">${IC.reload} Обновить</button>
+                    <button id="adm-reload" style="display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1px solid #555;background:#3d3d3d;color:#e0e0e0;cursor:pointer;font-size:11px">${IC.reload} Обновить</button>
                 </div>
                 <div id="adm-sections" style="flex:1;overflow-y:auto;overflow-x:hidden;padding:8px;position:relative;" class="adm-scroll"></div>
             </div>
@@ -340,48 +348,48 @@ export function renderPagesPanel(container) {
             const hasPages = s.pages && s.pages.length > 0;
             
             const wrap = document.createElement('div');
-            wrap.style.cssText = `margin-bottom:8px;border-radius:10px;border:1px solid ${t.border};overflow:hidden;transition:all 0.2s;`;
+            wrap.style.cssText = `margin-bottom:8px;border-radius:10px;border:1px solid #444;overflow:hidden;`;
             
             const hdr = document.createElement('div');
-            hdr.style.cssText = `display:flex;align-items:center;gap:10px;padding:10px 12px;background:${t.surface};cursor:pointer;user-select:none;transition:background 0.2s;`;
-            hdr.onmouseover = () => { hdr.style.background = t.surfaceHov; };
-            hdr.onmouseout = () => { hdr.style.background = t.surface; };
+            hdr.style.cssText = `display:flex;align-items:center;gap:10px;padding:10px 12px;background:#2d2d2d;cursor:pointer;user-select:none;`;
+            hdr.onmouseover = () => { hdr.style.background = '#3d3d3d'; };
+            hdr.onmouseout = () => { hdr.style.background = '#2d2d2d'; };
             
             hdr.innerHTML = `
-                <span style="color:${t.fgMuted};flex-shrink:0;display:flex;align-items:center;transition:transform 0.2s;transform:rotate(${isOpen ? 0 : -90}deg)">${IC.chevD}</span>
-                <span style="color:${t.fgMuted};flex-shrink:0;display:flex;align-items:center">${IC.folder}</span>
-                <span style="flex:1;font-size:13px;font-weight:600;color:${t.fg};font-family:${t.mono}">${esc(s.title)}</span>
-                <span style="font-size:10px;color:${t.fgSub};font-family:${t.mono}">${hasPages ? s.pages.length : 0}</span>
+                <span style="color:#aaa;flex-shrink:0;display:flex;align-items:center;transition:transform 0.2s;transform:rotate(${isOpen ? 0 : -90}deg)">${IC.chevD}</span>
+                <span style="color:#aaa;flex-shrink:0;display:flex;align-items:center">${IC.folder}</span>
+                <span style="flex:1;font-size:13px;font-weight:600;color:#e0e0e0">${esc(s.title)}</span>
+                <span style="font-size:10px;color:#aaa">${hasPages ? s.pages.length : 0}</span>
             `;
 
             const body = document.createElement('div');
-            body.style.cssText = `display:${isOpen ? 'block' : 'none'};border-top:1px solid ${t.border};max-height:500px;overflow-y:auto;`;
+            body.style.cssText = `display:${isOpen ? 'block' : 'none'};border-top:1px solid #444;max-height:500px;overflow-y:auto;background:#1a1a1a;`;
             
             if (hasPages) {
                 s.pages.forEach(p => {
                     const row = document.createElement('div');
                     const slug = p.href.replace(/^.*\//, '').replace(/\.html$/, '');
-                    row.style.cssText = `display:flex;align-items:center;gap:10px;padding:8px 12px 8px 20px;border-bottom:1px solid ${t.borderLight || t.border};background:${t.bg};transition:background 0.2s;`;
-                    row.onmouseover = () => { row.style.background = t.surface; };
-                    row.onmouseout = () => { row.style.background = t.bg; };
+                    row.style.cssText = `display:flex;align-items:center;gap:10px;padding:8px 12px 8px 20px;border-bottom:1px solid #333;background:#1a1a1a;transition:background 0.2s;`;
+                    row.onmouseover = () => { row.style.background = '#2a2a2a'; };
+                    row.onmouseout = () => { row.style.background = '#1a1a1a'; };
                     
                     row.innerHTML = `
-                        <span style="color:${t.fgSub};flex-shrink:0;opacity:0.7">${IC.file}</span>
+                        <span style="color:#aaa;flex-shrink:0;opacity:0.7">${IC.file}</span>
                         <div style="flex:1;min-width:0;">
-                            <div style="font-size:12px;color:${t.fg};font-family:${t.mono};font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.title)}</div>
-                            <div style="font-size:9px;color:${t.fgSub};font-family:${t.mono};margin-top:2px;">${slug}</div>
+                            <div style="font-size:12px;color:#e0e0e0;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.title)}</div>
+                            <div style="font-size:9px;color:#aaa;margin-top:2px;">${slug}</div>
                         </div>
-                        <button class="adm-edit-btn" style="display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;border:1px solid ${t.borderStrong};background:${t.surfaceHov};color:${t.fg};cursor:pointer;font-size:10px;font-family:${t.mono};font-weight:500;transition:all 0.2s" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">${IC.edit} Редактировать</button>
+                        <button class="adm-edit-btn" style="display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;border:1px solid #4ec9b0;background:#4ec9b0;color:#1a1a1a;cursor:pointer;font-size:10px;font-weight:600">${IC.edit} Редактировать</button>
                     `;
                     row.querySelector('.adm-edit-btn').addEventListener('click', (e) => {
                         e.stopPropagation();
-                        openMdEditor(sectEl, slug, p.title, load);
+                        openMdEditor(container, slug, p.title, load);
                     });
                     body.appendChild(row);
                 });
             } else {
                 const emptyRow = document.createElement('div');
-                emptyRow.style.cssText = `padding:16px;text-align:center;font-size:11px;color:${t.fgSub};font-family:${t.mono};background:${t.bg};`;
+                emptyRow.style.cssText = `padding:16px;text-align:center;font-size:11px;color:#aaa;background:#1a1a1a;`;
                 emptyRow.innerText = 'Нет страниц в этом разделе';
                 body.appendChild(emptyRow);
             }
