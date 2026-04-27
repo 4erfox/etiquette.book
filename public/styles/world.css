@@ -10,7 +10,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .country-card{background:#1e1e1e;border:1.5px solid #2e2e2e;border-radius:12px;padding:1rem 0.75rem;cursor:pointer;transition:all 0.2s ease;text-align:center;user-select:none}
 .country-card:hover{border-color:#FF6B5B;background:#252525;transform:translateY(-2px)}
 .country-card.active{border-color:#FF6B5B;background:rgba(255,107,91,0.08)}
-.country-card .flag{font-size:2rem;display:block;margin-bottom:0.4rem;line-height:1}
+.country-card .flag{display:flex;align-items:center;justify-content:center;margin-bottom:0.5rem;line-height:1}
 .country-card .c-name{font-size:0.82rem;font-weight:600;color:#fff;line-height:1.2}
 .country-card .c-sub{font-size:0.68rem;color:rgba(255,255,255,0.35);font-weight:400;margin-top:2px}
 .divider{max-width:860px;margin:0 auto 1.5rem;padding:0 1.5rem;border:none;border-top:1px solid #2a2a2a}
@@ -20,7 +20,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .detail-inner{background:#1a1a1a;border:1.5px solid #2e2e2e;border-radius:16px;overflow:hidden}
 .detail-header{padding:1.5rem;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .dh-left{display:flex;align-items:center;gap:0.9rem}
-.detail-flag{font-size:2.5rem;line-height:1}
+.detail-flag{line-height:1;display:flex;align-items:center}
 .detail-title{font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:0.15rem}
 .detail-tagline{font-size:0.82rem;color:rgba(255,255,255,0.4);font-weight:400}
 .close-btn{width:34px;height:34px;border:1px solid #3a3a3a;border-radius:8px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);flex-shrink:0;transition:all 0.2s}
@@ -48,7 +48,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .ci-label{font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#FF6B5B;margin-bottom:0.4rem}
 .ci-row{display:flex;flex-direction:column;gap:0.25rem}
 .ci-entry{font-size:0.8rem;color:rgba(255,255,255,0.55);line-height:1.4;display:flex;align-items:baseline;gap:0.3rem}
-.ci-entry .flag-sm{font-size:0.8rem;flex-shrink:0}
+.ci-entry .flag-sm{display:inline-flex;align-items:center;flex-shrink:0}
 .kz-block{padding:1.25rem 1.5rem}
 .kz-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:1rem}
 .kz-item{background:#222;border:1px solid #2e2e2e;border-radius:10px;padding:0.8rem 1rem}
