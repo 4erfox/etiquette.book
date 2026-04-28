@@ -51,7 +51,7 @@ const videos = [
 ];
 
 function getEmbedUrl(v) {
-  let url = `https://www.youtube-nocookie.com/embed/${v.id}?rel=0&modestbranding=1`;
+  let url = `https://www.youtube.com/embed/${v.id}?rel=0&modestbranding=1`;
   if (v.start) url += `&start=${v.start}`;
   return url;
 }
