@@ -51,11 +51,11 @@ const videos = [
 ];
 
 function getEmbedUrl(v) {
-  // Используем обычное сложение строк, чтобы избежать ошибок с обратными кавычками
-  var url = "https://www.youtube.com/embed/" + v.id + "?rel=0&modestbranding=1";
-  if (v.start) {
-    url += "&start=" + v.start;
-  }
+  // window.location.origin автоматически подставит "https://etiquette-book.onrender.com"
+  const origin = window.location.origin;
+  let url = `https://www.youtube.com/embed/${v.id}?rel=0&modestbranding=1&origin=${origin}`;
+  
+  if (v.start) url += `&start=${v.start}`;
   return url;
 }
 
