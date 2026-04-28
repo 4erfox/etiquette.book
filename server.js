@@ -147,17 +147,19 @@ app.set('trust proxy', 1);
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc:  ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
-      styleSrc:   ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
-      fontSrc:    ["'self'", "fonts.gstatic.com", "fonts.googleapis.com"],
-      imgSrc:     ["'self'", "data:", "blob:", "https://img.youtube.com", "https://i.ytimg.com"],
-      connectSrc: ["'self'"],
-      frameSrc:   ["'self'", "https://www.youtube-nocookie.com", "https://www.youtube.com"],
-      childSrc: ["'self'", "https://www.youtube-nocookie.com", "https://*.youtube-nocookie.com", "https://www.youtube.com", "https://*.youtube.com"]
+      defaultSrc:  ["'self'"],
+      scriptSrc:   ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
+      styleSrc:    ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
+      fontSrc:     ["'self'", "fonts.gstatic.com", "fonts.googleapis.com"],
+      imgSrc:      ["'self'", "data:", "blob:", "https:"],
+      connectSrc:  ["'self'"],
+      frameSrc:    ["'self'", "https:", "http:"],
+      childSrc:    ["'self'", "https:", "http:"],
+      mediaSrc:    ["'self'", "https:", "blob:"],
     },
   },
   crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: false,
 }));
 
 // ✅ ИСПРАВЛЕНО: CORS разрешает запросы с самого Render домена
