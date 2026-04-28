@@ -148,12 +148,12 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc:  ["'self'", "'unsafe-inline'", "'unsafe-eval'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
+      scriptSrc:  ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
       styleSrc:   ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
-      fontSrc:    ["'self'", "fonts.gstatic.com", "fonts.googleapis.com", "data:"],
-      imgSrc:     ["'self'", "data:", "blob:", "*"], // Разрешаем картинки отовсюду
+      fontSrc:    ["'self'", "fonts.gstatic.com", "fonts.googleapis.com"],
+      imgSrc:     ["'self'", "data:", "blob:", "https://img.youtube.com", "https://i.ytimg.com"],
       connectSrc: ["'self'"],
-      frameSrc: ["'self'", "https://www.youtube-nocookie.com", "https://www.youtube.com"],
+      frameSrc:   ["'self'", "https://www.youtube-nocookie.com", "https://www.youtube.com"],
     },
   },
   crossOriginEmbedderPolicy: false,
