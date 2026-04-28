@@ -73,7 +73,7 @@ function render() {
     <div class="video-card">
       <div class="video-frame">
         <iframe
-          src="${getEmbedUrl(v)}"
+          src="https://www.youtube-nocookie.com/embed/${v.id}${v.start ? '?start='+v.start : ''}&rel=0"
           title="${v.title}"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
@@ -84,10 +84,6 @@ function render() {
         <div class="video-topic">${v.topic}</div>
         <div class="video-title">${v.title}</div>
         <div class="video-desc">${v.desc}</div>
-        <a class="video-link" href="${getWatchUrl(v)}" target="_blank" rel="noopener">
-          Открыть на YouTube
-          <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-        </a>
       </div>
     </div>
   `).join('');
