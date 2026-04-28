@@ -51,19 +51,19 @@ const videos = [
 ];
 
 function getEmbedUrl(v) {
-  // window.location.origin автоматически подставит "https://etiquette-book.onrender.com"
+  // ВАЖНО: Ссылка должна начинаться с https://www.youtube.com/embed/
   const origin = window.location.origin;
-  let url = `https://www.youtube.com/embed/${v.id}?rel=0&modestbranding=1&origin=${origin}`;
+  const baseUrl = "https://www.youtube.com/embed/";
+  let url = `${baseUrl}${v.id}?rel=0&modestbranding=1&origin=${origin}`;
   
   if (v.start) url += `&start=${v.start}`;
   return url;
 }
 
 function getWatchUrl(v) {
-  var url = "https://www.youtube.com/watch?v=" + v.id;
-  if (v.start) {
-    url += "&t=" + v.start + "s";
-  }
+  // Ссылка для кнопки "Открыть на YouTube"
+  let url = `https://www.youtube.com/watch?v=${v.id}`;
+  if (v.start) url += `&t=${v.start}s`;
   return url;
 }
 
