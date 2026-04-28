@@ -51,14 +51,19 @@ const videos = [
 ];
 
 function getEmbedUrl(v) {
-  let url = `https://www.youtube.com/embed/${v.id}?rel=0&modestbranding=1`;
-  if (v.start) url += `&start=${v.start}`;
+  // Используем обычное сложение строк, чтобы избежать ошибок с обратными кавычками
+  var url = "https://www.youtube.com/embed/" + v.id + "?rel=0&modestbranding=1";
+  if (v.start) {
+    url += "&start=" + v.start;
+  }
   return url;
 }
 
 function getWatchUrl(v) {
-  let url = `https://www.youtube.com/watch?v=${v.id}`;
-  if (v.start) url += `&t=${v.start}s`;
+  var url = "https://www.youtube.com/watch?v=" + v.id;
+  if (v.start) {
+    url += "&t=" + v.start + "s";
+  }
   return url;
 }
 
