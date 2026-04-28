@@ -154,6 +154,7 @@ app.use(helmet({
       imgSrc:     ["'self'", "data:", "blob:", "https://img.youtube.com", "https://i.ytimg.com"],
       connectSrc: ["'self'"],
       frameSrc:   ["'self'", "https://www.youtube-nocookie.com", "https://www.youtube.com"],
+      childSrc: ["'self'", "https://www.youtube-nocookie.com", "https://*.youtube-nocookie.com", "https://www.youtube.com", "https://*.youtube.com"]
     },
   },
   crossOriginEmbedderPolicy: false,
