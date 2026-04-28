@@ -153,6 +153,7 @@ app.use(helmet({
       fontSrc:    ["'self'", "fonts.gstatic.com", "fonts.googleapis.com", "data:"],
       imgSrc:     ["'self'", "data:", "blob:", "*"], // Разрешаем картинки отовсюду
       connectSrc: ["'self'"],
+      frameSrc: ["'self'", "https://www.youtube-nocookie.com", "https://www.youtube.com"],
     },
   },
   crossOriginEmbedderPolicy: false,
