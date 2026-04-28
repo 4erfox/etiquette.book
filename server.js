@@ -145,19 +145,7 @@ app.set('trust proxy', 1);
 
 // ✅ ИСПРАВЛЕНО: helmet с разрешением внешних шрифтов и скриптов
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc:  ["'self'"],
-      scriptSrc:   ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
-      styleSrc:    ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
-      fontSrc:     ["'self'", "fonts.gstatic.com", "fonts.googleapis.com"],
-      imgSrc:      ["'self'", "data:", "blob:", "https:"],
-      connectSrc:  ["'self'"],
-      frameSrc:    ["'self'", "https:", "http:"],
-      childSrc:    ["'self'", "https:", "http:"],
-      mediaSrc:    ["'self'", "https:", "blob:"],
-    },
-  },
+  contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
   crossOriginResourcePolicy: false,
 }));
