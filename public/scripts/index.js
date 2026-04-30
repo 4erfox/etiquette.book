@@ -190,13 +190,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // 6. ОБРАБОТЧИКИ
     contentMenuBtn?.addEventListener('click', openSidebar);
     closeSidebarBtn?.addEventListener('click', closeSidebar);
-    overlay?.addEventListener('click', closeSidebar);
+    overlay?.addEventListener('click', closeAll); 
     contactsBtn?.addEventListener('click', () => contactsMenu?.classList.add('open'));
     contactsCloseBtn?.addEventListener('click', () => contactsMenu?.classList.remove('open'));
 
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') closeSidebar();
-    });
+    if (e.key === 'Escape') closeAll();
+});
 
     // 7. ПОИСК В МЕНЮ
     searchInput?.addEventListener('input', function() {
