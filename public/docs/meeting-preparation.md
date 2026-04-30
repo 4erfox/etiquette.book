@@ -3,7 +3,7 @@ title: "Подготовка к встрече"
 description: "Введение в"
 section: meetings
 read_time: "10 минут"
-chapter: "Глава 3"
+chapter: "Глава 2"
 toc:
   - id: importance
     label: "Значение подготовки"

@@ -1,6 +1,31 @@
 *{margin:0;padding:0;box-sizing:border-box}
 
 body{
+
+    .topbar{
+    position:sticky;top:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0.9rem 1.5rem;
+    background:rgba(17,17,17,0.95);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid #2a2a2a;
+  }
+  .topbar-title{
+    font-size:0.9rem;font-weight:600;
+    color:rgba(255,255,255,0.7);
+  }
+  .back-btn{
+    display:flex;align-items:center;gap:0.4rem;
+    font-size:0.875rem;font-weight:500;
+    color:rgba(255,255,255,0.6);text-decoration:none;
+    padding:0.4rem 0.9rem;
+    border:1px solid #3a3a3a;border-radius:7px;
+    background:transparent;cursor:pointer;
+    transition:all 0.2s;font-family:'Inter',sans-serif;
+  }
+  .back-btn:hover{color:#fff;border-color:#fff;background:rgba(255,255,255,0.05)}
+  .back-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
+
   font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   background:#111;
   color:#fff;

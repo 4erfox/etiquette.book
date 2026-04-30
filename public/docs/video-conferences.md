@@ -3,7 +3,7 @@ title: "Видеоконференции"
 description: "Введение в профессиональную культ"
 section: online
 read_time: "12 минут"
-chapter: "Глава 5"
+chapter: "Глава 2"
 toc:
   - id: introduction
     label: "Введение"

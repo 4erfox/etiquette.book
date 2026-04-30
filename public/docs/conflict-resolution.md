@@ -3,7 +3,7 @@ title: "Урегулирование конфликта"
 description: ""
 section: conflicts
 read_time: "13 минут"
-chapter: "Глава 6"
+chapter: "Глава 3"
 toc:
   - id: introduction
     label: "Введение"

@@ -3,7 +3,7 @@ title: "Уважение к иерархии"
 description: "Введение в профессиональную культ"
 section: culture
 read_time: "10 минут"
-chapter: "Глава 4"
+chapter: "Глава 1"
 toc:
   - id: introduction
     label: "Введение"

@@ -6,6 +6,16 @@ function initTheme() {
 }
 initTheme();
 
+// Функция экранирования HTML
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // 1. ЭЛЕМЕНТЫ УПРАВЛЕНИЯ
@@ -44,7 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay?.classList.remove('open');
         document.body.style.overflow = '';
     });
-    // 2. ЗАГРУЗКА КОНТАКТОВ — через API (сервер сохраняет туда же)
+
+    // 2. ЗАГРУЗКА КОНТАКТОВ
     async function loadContacts() {
         const container = document.querySelector('.contacts-content');
         if (!container) return;
@@ -61,13 +72,16 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         try {
-            const res = await fetch('/api/contacts');
+            const res = await fetch('/api/contacts?t=' + Date.now());
             if (!res.ok) throw new Error('api error');
             const data = await res.json();
             let contacts = [];
             try { contacts = JSON.parse(data.content || '[]'); } catch { contacts = []; }
 
-            if (!contacts.length) { container.innerHTML = fallback; return; }
+            if (!contacts.length) { 
+                container.innerHTML = fallback; 
+                return; 
+            }
 
             container.innerHTML = contacts.map(c => `
                 <div class="contact-item">
@@ -77,24 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     </a>
                 </div>
             `).join('');
-        } catch {
-            // Если API недоступен — читаем из статичного файла
-            try {
-                const res = await fetch('/data/contacts.json?t=' + Date.now());
-                if (!res.ok) throw new Error('file error');
-                const contacts = await res.json();
-                if (!contacts.length) throw new Error('empty');
-                container.innerHTML = contacts.map(c => `
-                    <div class="contact-item">
-                        <label class="contact-label">${escapeHtml(c.title)}</label>
-                        <a href="${escapeHtml(c.href)}" class="contact-value" ${c.external ? 'target="_blank"' : ''}>
-                            ${escapeHtml(c.subtitle || c.href)}
-                        </a>
-                    </div>
-                `).join('');
-            } catch {
-                container.innerHTML = fallback;
-            }
+        } catch (err) {
+            container.innerHTML = fallback;
         }
     }
 
@@ -165,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
         } catch (err) {
-            console.log('nav.json не найден:', err);
+            // тихо падаем
         }
     }
 
@@ -218,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         title.addEventListener('click', () => title.closest('.menu-section')?.classList.toggle('open'));
     });
 
-    // 9. ОТКРЫТИЕ РАЗДЕЛА ПО ХЭШУ (из хлебных крошек)
+    // 9. ОТКРЫТИЕ РАЗДЕЛА ПО ХЭШУ
     window.addEventListener('load', () => {
         const hash = location.hash.slice(1);
         if (hash) {
@@ -231,5 +229,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-
 });

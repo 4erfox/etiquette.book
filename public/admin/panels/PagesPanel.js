@@ -20,6 +20,7 @@ const IC = {
     save:   `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>`,
     expand: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>`,
     shrink: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>`,
+    delete: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>`,
 };
 
 // ─── Кнопки форматирования ────────────────────────────────────────────────────
@@ -48,7 +49,6 @@ function applyFormat(ta, btn) {
         newVal = ta.value.slice(0, start) + l + (sel || 'текст') + r + ta.value.slice(end);
         newCursor = start + l.length + (sel || 'текст').length + r.length;
     } else if (btn.line) {
-        // Находим начало строки
         const lineStart = ta.value.lastIndexOf('\n', start - 1) + 1;
         newVal = ta.value.slice(0, lineStart) + btn.line + ta.value.slice(lineStart);
         newCursor = start + btn.line.length;
@@ -105,7 +105,7 @@ function openMdEditor(panelRoot, slug, title, onClose) {
         b.onmouseenter = () => b.style.background = '#ddd';
         b.onmouseleave = () => b.style.background = 'transparent';
         b.onmousedown = (e) => {
-            e.preventDefault(); // не снимаем фокус с textarea
+            e.preventDefault();
             applyFormat(ta, btn);
         };
         toolbar.appendChild(b);
@@ -196,7 +196,6 @@ function openMdEditor(panelRoot, slug, title, onClose) {
         updateStatus();
     };
 
-    // Tab → вставляет 2 пробела вместо смены фокуса
     ta.onkeydown = (e) => {
         if (e.key === 'Tab') {
             e.preventDefault();
@@ -204,7 +203,6 @@ function openMdEditor(panelRoot, slug, title, onClose) {
             ta.value = ta.value.slice(0, s) + '  ' + ta.value.slice(ta.selectionEnd);
             ta.setSelectionRange(s + 2, s + 2);
         }
-        // Ctrl+S — сохранить
         if ((e.ctrlKey || e.metaKey) && e.key === 's') {
             e.preventDefault();
             doSave();
@@ -242,6 +240,17 @@ export function renderPagesPanel(container) {
             render();
         } catch (e) {
             container.innerHTML = `<div style="padding:20px;color:red;">${e.message}</div>`;
+        }
+    }
+
+    async function deletePage(slug, title) {
+        if (!confirm(`Удалить страницу «${title}»? Это действие нельзя отменить.`)) return;
+        try {
+            await bridge.deleteDoc(slug);
+            toast.success(`Страница «${title}» удалена`);
+            load(); // перезагружаем список
+        } catch (e) {
+            toast.error('Ошибка удаления: ' + e.message);
         }
     }
 
@@ -283,9 +292,11 @@ export function renderPagesPanel(container) {
                 row.innerHTML = `
                     <span style="color:${t.fgSub};">${IC.file}</span>
                     <div style="flex:1;font-size:12px;color:${t.fg};">${esc(p.title)}</div>
-                    <button class="edit-btn" style="padding:5px 12px;border-radius:6px;border:1px solid #555;background:#444;color:#fff;cursor:pointer;font-size:10px;font-weight:600;">Правка</button>
+                    <button class="edit-btn" data-slug="${slug}" data-title="${esc(p.title)}" style="padding:5px 12px;border-radius:6px;border:1px solid #555;background:#444;color:#fff;cursor:pointer;font-size:10px;font-weight:600;">Правка</button>
+                    <button class="delete-btn" data-slug="${slug}" data-title="${esc(p.title)}" style="padding:5px 10px;border-radius:6px;border:1px solid #ef4444;background:rgba(239,68,68,0.1);color:#ef4444;cursor:pointer;font-size:10px;font-weight:600;">${IC.delete} Удалить</button>
                 `;
                 row.querySelector('.edit-btn').onclick = () => openMdEditor(container, slug, p.title, load);
+                row.querySelector('.delete-btn').onclick = () => deletePage(slug, p.title);
                 body.appendChild(row);
             });
 

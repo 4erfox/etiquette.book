@@ -112,10 +112,10 @@ body {
     display: flex;
     max-width: 1400px;
     margin: 0 auto;
-    padding-top: 90px;    /* отступ под фиксированную шапку */
-    gap: 3rem;
+    padding-top: 90px;
+    gap: 2rem;
     padding-left: 2rem;
-    padding-right: 2rem;
+    padding-right: 3rem;
 }
 
 /* ============================================================
@@ -176,10 +176,8 @@ body {
 .main-content {
     flex: 1;
     padding: 2rem 0 5rem;
-    max-width: 720px; /* оптимальная ширина для чтения */
-    min-width: 0;     /* fix: flex-child не выходит за пределы */
+    min-width: 0;
 }
-
 /* ============================================================
    ШАПКА СТРАНИЦЫ (заголовок + мета)
    ============================================================ */
@@ -519,13 +517,87 @@ ol ol           { list-style-type: lower-alpha; margin-top: 0.75rem; margin-bott
     background: rgba(0, 0, 0, 0.01);
 }
 
-/* ============================================================
-   АДАПТИВ: таблица на маленьких экранах (до 600px)
-   ============================================================ */
-@media (max-width: 600px) {
-    .etiquette-table th,
-    .etiquette-table td {
-        padding: 0.75rem;
-        font-size: 0.875rem;
-    }
+/* ── МОБИЛЬНАЯ АДАПТАЦИЯ ── */
+@media (max-width: 768px) {
+
+  /* Убираем двухколоночный макет */
+  .page-wrapper {
+    flex-direction: column;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 70px;
+    gap: 1.5rem;
+  }
+
+  /* Боковое оглавление — горизонтально сверху */
+  .toc-sidebar {
+    position: static;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  /* Заголовок страницы */
+  .page-title {
+    font-size: 1.75rem;
+  }
+
+  /* Основной контент — полная ширина */
+  .main-content {
+    max-width: 100%;
+    padding: 0 0 3rem;
+  }
+
+  /* Текст чуть меньше */
+  .section-text {
+    font-size: 1rem;
+    text-align: left;
+    hyphens: none;
+  }
+
+  /* Шапка — меньше паддинг */
+  .header {
+    padding: 0.9rem 1rem;
+  }
+
+  /* Drop cap на мобилке — убираем */
+  .section-text.dropcap::first-letter {
+    font-size: 1rem;
+    float: none;
+    margin: 0;
+    color: inherit;
+  }
+
+  /* Таблицы — горизонтальная прокрутка */
+  .main-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 0.875rem;
+  }
+
+  /* Meta строка — в столбик */
+  .page-meta {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-wrapper {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.375rem;
+  }
+
+  .toc-sidebar {
+    max-height: 160px;
+  }
 }

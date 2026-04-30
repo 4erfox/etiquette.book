@@ -3,7 +3,7 @@ title: "Проведение переговоров"
 description: "Введение в"
 section: meetings
 read_time: "15 минут"
-chapter: "Глава 3"
+chapter: "Глава 2"
 toc:
   - id: introduction
     label: "Введение"

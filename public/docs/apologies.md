@@ -3,7 +3,7 @@ title: "Извинения в деловом этикете"
 description: ""
 section: conflicts
 read_time: "12 минут"
-chapter: "Глава 6"
+chapter: "Глава 3"
 toc:
   - id: definition
     label: "Определение извинения"

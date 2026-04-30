@@ -32,9 +32,6 @@ export function renderSitePanel(container) {
 
   async function save() {
     try {
-      // ✅ ИСПРАВЛЕНО: сервер ожидает { siteTitle, siteDescription } напрямую,
-      // а bridge.writeSiteConfig оборачивает в { config: cfg }.
-      // Поэтому вызываем API напрямую через fetch:
       const token = localStorage.getItem('adm_jwt');
       const res = await fetch('/api/config', {
         method: 'POST',

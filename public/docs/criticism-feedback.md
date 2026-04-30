@@ -3,7 +3,7 @@ title: "Критика и обратная связь"
 description: ""
 section: conflicts
 read_time: "11 минут"
-chapter: "Глава 6"
+chapter: "Глава 3"
 toc:
   - id: introduction
     label: "Введение"
