@@ -1,9 +1,9 @@
 ---
 title: "Деловая одежда"
 description: ""
-section: basics
+section: image
 read_time: "15 минут"
-chapter: "Глава 2"
+chapter: "Глава 4"
 toc:
   - id: introduction
     label: "Введение"

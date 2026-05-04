@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles/index.css">
     <style>
-        .hero { pointer-events: none; }
-        .hero .content { pointer-events: auto; }
+        .hero {
+            pointer-events: none;
+        }
+
+        .hero .content {
+            pointer-events: auto;
+        }
     </style>
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="shortcut icon" href="/favicon.png">
@@ -19,11 +25,19 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="/styles/flag-icons.min.css">
 
-    <meta name="description" content="Систематизированный материал по нормам делового поведения и профессиональной коммуникации в Казахстане">
+    <meta name="description"
+        content="Систематизированный материал по нормам делового поведения и профессиональной коммуникации в Казахстане">
     <meta name="robots" content="index, follow">
+    <style>
+        svg {
+            max-width: 20px;
+            max-height: 20px;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="sidebar-overlay"></div> 
+    <div class="sidebar-overlay"></div>
 
     <aside class="sidebar">
         <div class="sidebar-header">
@@ -31,14 +45,14 @@
             <div class="sidebar-icons">
                 <button class="sidebar-icon-btn" id="contacts-btn" title="Контакты">
                     <svg viewBox="0 0 24 24">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                        <polyline points="22 6 12 13 2 6"/>
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22 6 12 13 2 6" />
                     </svg>
                 </button>
                 <button class="sidebar-icon-btn" id="close-sidebar" title="Закрыть меню">
                     <svg viewBox="0 0 24 24">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
                     </svg>
                 </button>
             </div>
@@ -48,8 +62,8 @@
             <div class="search-input-wrapper">
                 <div class="search-icon">
                     <svg viewBox="0 0 24 24">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="m21 21-4.35-4.35"/>
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35" />
                     </svg>
                 </div>
                 <input type="text" class="search-input" placeholder="Поиск по названию..." id="sidebar-search">
@@ -66,7 +80,9 @@
                         <div class="menu-section-controls">
                             <span class="menu-section-counter">4</span>
                             <div class="menu-section-arrow">
-                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polyline points="6 9 12 15 18 9" />
+                                </svg>
                             </div>
                         </div>
                     </div>
@@ -74,7 +90,8 @@
                 <div class="menu-items">
                     <a href="/pages/onepage.html" class="menu-item">Что такое деловой этикет</a>
                     <a href="/pages/why-needed.html" class="menu-item">Почему это важно</a>
-                    <a href="/pages/national-features.html" class="menu-item">Особенности деловой культуры Казахстана</a>
+                    <a href="/pages/national-features.html" class="menu-item">Особенности деловой культуры
+                        Казахстана</a>
                     <a href="/pages/respect-hierarchy.html" class="menu-item">Иерархия и нормы взаимодействия</a>
                 </div>
             </div>
@@ -87,7 +104,9 @@
                         <div class="menu-section-controls">
                             <span class="menu-section-counter">4</span>
                             <div class="menu-section-arrow">
-                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polyline points="6 9 12 15 18 9" />
+                                </svg>
                             </div>
                         </div>
                     </div>
@@ -108,7 +127,9 @@
                         <div class="menu-section-controls">
                             <span class="menu-section-counter">3</span>
                             <div class="menu-section-arrow">
-                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                                <svg viewBox="0 0 24 24">
+                                    <polyline points="6 9 12 15 18 9" />
+                                </svg>
                             </div>
                         </div>
                     </div>
@@ -128,8 +149,8 @@
             <span class="contacts-title">Контакты</span>
             <button class="contacts-close-btn" id="contacts-close-btn">
                 <svg viewBox="0 0 24 24">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
             </button>
         </div>
@@ -154,27 +175,35 @@
         <div class="materials-header">
             <span class="materials-title">Материалы</span>
             <button class="materials-close-btn" id="materials-close-btn">
-                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <svg viewBox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
             </button>
         </div>
         <div class="materials-content">
             <div class="materials-section">
-                <div class="materials-section-title">📚 Книги</div>
+                <a href="/materials/books.html" class="materials-section-title"
+                    style="text-decoration:none;color:inherit;display:block;cursor:pointer;">📕 Книги</a>
             </div>
             <div class="materials-section">
-                <a href="/materials/videos.html" class="materials-section-title" style="text-decoration:none;color:inherit;display:block;cursor:pointer;">📼 Видео</a>
+                <a href="/materials/videos.html" class="materials-section-title"
+                    style="text-decoration:none;color:inherit;display:block;cursor:pointer;">📼 Видео</a>
             </div>
             <div class="materials-section">
-                <div class="materials-section-title">Деловая одежда</div>
+                <a href="/materials/dress-code.html" class="materials-section-title"
+                    style="text-decoration:none;color:inherit;display:block;cursor:pointer;">👔 Деловой стиль</a>
             </div>
             <div class="materials-section">
                 <div class="materials-section-title">Флеш-карточки</div>
             </div>
             <div class="materials-section">
-                <a href="/materials/world-etiquette.html" class="materials-section-title" style="text-decoration:none;color:inherit;display:block;cursor:pointer;">🌍 Этикет без границ</a>
+                <a href="/materials/world-etiquette.html" class="materials-section-title"
+                    style="text-decoration:none;color:inherit;display:block;cursor:pointer;">🌍 Этикет без границ</a>
             </div>
             <div class="materials-section">
-                <a href="/materials/quiz.html" class="materials-section-title" style="text-decoration:none;color:inherit;display:block;cursor:pointer;">🎯 Тест: проверьте себя</a>
+                <a href="/materials/quiz.html" class="materials-section-title"
+                    style="text-decoration:none;color:inherit;display:block;cursor:pointer;">🎯 Тест: проверьте себя</a>
             </div>
         </div>
     </div>
@@ -183,20 +212,21 @@
         <div class="nav-container">
             <button class="nav-btn active">
                 <svg viewBox="0 0 24 24">
-                    <path d="M4 6h16M4 12h16M4 18h16"/>
+                    <path d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
                 <span>Содержание</span>
             </button>
             <button class="nav-btn" id="search-btn">
                 <svg viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path d="m21 21-4.35-4.35"/>
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
                 </svg>
                 <span>Поиск</span>
             </button>
             <button class="nav-btn" id="materials-btn">
                 <svg viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    <path
+                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                 </svg>
                 <span>Материалы</span>
             </button>
@@ -207,4 +237,5 @@
     <script type="module" src="/admin/admin-panel.js"></script>
     <script type="module" src="/scripts/search.js"></script>
 </body>
+
 </html>

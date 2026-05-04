@@ -1,9 +1,9 @@
 ---
 title: "Телефонный этикет"
-description: "Введение в"
+description: "Введение"
 section: basics
 read_time: "12 минут"
-chapter: "Глава 2"
+chapter: "Глава 3"
 toc:
   - id: introduction
     label: "Введение"

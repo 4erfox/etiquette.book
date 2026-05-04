@@ -286,7 +286,8 @@ export function renderPagesPanel(container) {
             body.style.borderTop = `1px solid ${t.border}`;
 
             (s.pages || []).forEach(p => {
-                const slug = p.href.replace(/^.*\//, '').replace(/\.html$/, '');
+                const slug = new URLSearchParams(p.href.split('?')[1] || '').get('slug')
+             || p.href.replace(/^.*\//, '').replace(/\.html$/, '');
                 const row = document.createElement('div');
                 row.style.cssText = `display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid ${t.border};`;
                 row.innerHTML = `

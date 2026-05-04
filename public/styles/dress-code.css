@@ -1,0 +1,332 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0d0d0f;
+  color: #fff;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+  background: rgba(13, 13, 15, 0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.topbar-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.02em;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.back-btn:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.back-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  flex-shrink: 0;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 4rem 1.5rem 3rem;
+  max-width: 960px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.hero-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #FF6B5B;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+
+.hero-desc {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.7;
+  max-width: 520px;
+  font-weight: 400;
+}
+
+/* ── STYLES WRAP ── */
+.styles-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.5rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── STYLE CARD ── */
+.style-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.3s;
+  background: #111114;
+}
+
+.style-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.style-card.wrong {
+  border-color: rgba(255, 60, 60, 0.2);
+}
+
+.style-card.wrong:hover {
+  border-color: rgba(255, 60, 60, 0.4);
+}
+
+.style-card.kz {
+  border-color: rgba(255, 184, 0, 0.2);
+}
+
+.style-card.kz:hover {
+  border-color: rgba(255, 184, 0, 0.4);
+}
+
+/* ── PHOTO SIDE ── */
+.card-photo{
+  position:relative;
+  overflow:hidden;
+  min-height:400px;
+  background: #0d0d0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-photo img{
+  width:100%;
+  height:100%;
+  object-fit: contain;  /* изображение видно полностью, без обрезки */
+  display:block;
+  transition:transform 0.6s ease;
+}
+
+/* ── INFO SIDE ── */
+.card-info {
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.card-number {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.style-card.wrong .card-title {
+  color: #ff4444;
+}
+
+.style-card.kz .card-title {
+  color: #ffb800;
+}
+
+.card-en {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+}
+
+.card-desc {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.6;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tag {
+  padding: 0.28rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.style-card.wrong .tag {
+  border-color: rgba(255, 60, 60, 0.2);
+  background: rgba(255, 60, 60, 0.05);
+  color: rgba(255, 100, 100, 0.7);
+}
+
+.style-card.kz .tag {
+  border-color: rgba(255, 184, 0, 0.2);
+  background: rgba(255, 184, 0, 0.05);
+  color: rgba(255, 200, 60, 0.7);
+}
+
+.card-feeling {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.25);
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.feeling-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FF6B5B;
+  flex-shrink: 0;
+}
+
+.style-card.wrong .feeling-dot {
+  background: #ff4444;
+}
+
+.style-card.kz .feeling-dot {
+  background: #ffb800;
+}
+
+.feeling-text {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ── ALTERNATE LAYOUT (photo right) ── */
+.style-card.reverse {
+  direction: rtl;
+}
+
+.style-card.reverse .card-info {
+  direction: ltr;
+}
+
+.style-card.reverse .card-photo {
+  direction: ltr;
+}
+
+/* ── DIVIDER LABEL ── */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.5rem 0 1.5rem;
+  opacity: 0.3;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.section-divider span {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  .style-card {
+    grid-template-columns: 1fr;
+    direction: ltr !important;
+  }
+  .card-photo {
+    min-height: 260px;
+  }
+  .card-info {
+    padding: 1.5rem 1.25rem;
+    gap: 1rem;
+  }
+  .card-title {
+    font-size: 1.25rem;
+  }
+  .hero {
+    padding: 2.5rem 1rem 2rem;
+  }
+  .styles-wrap {
+    padding: 0 1rem 3rem;
+  }
+  .style-card.reverse .card-photo {
+    order: -1;
+  }
+}

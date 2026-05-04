@@ -1,9 +1,9 @@
 ---
 title: "Деловой обед"
 description: "Введение в"
-section: meetings
+section: image
 read_time: "14 минут"
-chapter: "Глава 3"
+chapter: "Глава 4"
 toc:
   - id: introduction
     label: "Введение"

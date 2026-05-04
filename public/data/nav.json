@@ -1,74 +1,71 @@
 [
   {
-    "id": "start",
-    "title": "🚀 Начало пути",
+    "id": "basics",
+    "title": "Глава 1. Основы",
     "pages": [
       {
-        "name": "onepage.html",
-        "href": "/pages/onepage.html",
-        "title": "Что такое деловой этикет"
+        "href": "/pages/page.html?slug=onepage",
+        "title": "Что такое этикет"
       },
       {
-        "name": "why-needed.html",
-        "href": "/pages/why-needed.html",
-        "title": "Почему это важно"
+        "href": "/pages/page.html?slug=first-impression",
+        "title": "Первое впечатление"
       },
       {
-        "name": "national-features.html",
-        "href": "/pages/national-features.html",
-        "title": "Особенности Казахстана"
-      },
-      {
-        "name": "respect-hierarchy.html",
-        "href": "/pages/respect-hierarchy.html",
-        "title": "Кто главный и как это работает"
+        "href": "/pages/page.html?slug=personal-boundaries",
+        "title": "Личные границы"
       }
     ]
   },
   {
-    "id": "meeting",
-    "title": "🤝 День встречи",
+    "id": "communication",
+    "title": "Глава 2. Коммуникация",
     "pages": [
       {
-        "name": "meeting-preparation.html",
-        "href": "/pages/meeting-preparation.html",
-        "title": "Перед встречей"
+        "href": "/pages/page.html?slug=email-etiquette",
+        "title": "Деловые письма"
       },
       {
-        "name": "conducting-negotiations.html",
-        "href": "/pages/conducting-negotiations.html",
-        "title": "Во время переговоров"
-      },
-      {
-        "name": "business-lunch.html",
-        "href": "/pages/business-lunch.html",
-        "title": "Деловой обед"
-      },
-      {
-        "name": "video-conferences.html",
-        "href": "/pages/video-conferences.html",
-        "title": "Онлайн-встреча"
+        "href": "/pages/page.html?slug=digital-etiquette",
+        "title": "Цифровой этикет"
       }
     ]
   },
   {
-    "id": "problems",
-    "title": "⚠️ Сложные моменты",
+    "id": "behavior",
+    "title": "Глава 3. Поведение",
     "pages": [
       {
-        "name": "conflict-resolution.html",
-        "href": "/pages/conflict-resolution.html",
-        "title": "Конфликты"
+        "href": "/pages/page.html?slug=punctuality",
+        "title": "Пунктуальность"
       },
       {
-        "name": "criticism-feedback.html",
-        "href": "/pages/criticism-feedback.html",
-        "title": "Критика"
+        "href": "/pages/page.html?slug=phone-etiquette",
+        "title": "Телефонный этикет"
+      }
+    ]
+  },
+  {
+    "id": "image",
+    "title": "Глава 4. Имидж",
+    "pages": [
+      {
+        "href": "/pages/page.html?slug=business-attire",
+        "title": "Дресс-код"
       },
       {
-        "name": "apologies.html",
-        "href": "/pages/apologies.html",
-        "title": "Извинения"
+        "href": "/pages/page.html?slug=business-lunch",
+        "title": "Бизнес-ланч"
+      }
+    ]
+  },
+  {
+    "id": "negotiations",
+    "title": "Глава 5. Переговоры",
+    "pages": [
+      {
+        "href": "/pages/page.html?slug=conducting-negotiations",
+        "title": "Переговоры"
       }
     ]
   }

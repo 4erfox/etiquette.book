@@ -1,9 +1,9 @@
 ---
 title: "Проведение переговоров"
 description: "Введение в"
-section: meetings
+section: negotiations
 read_time: "15 минут"
-chapter: "Глава 2"
+chapter: "Глава 5"
 toc:
   - id: introduction
     label: "Введение"

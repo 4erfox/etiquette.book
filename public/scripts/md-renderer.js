@@ -64,12 +64,11 @@
 
   // Хлебные крошки
   const sectionLabels = {
-    intro:     'Введение',
-    basics:    'Основы делового этикета',
-    meetings:  'Деловые встречи',
-    culture:   'Деловая культура Казахстана',
-    online:    'Онлайн-коммуникация',
-    conflicts: 'Конфликты и сложные ситуации',
+    intro:     'Глава 1. Основы',
+    online:    'Глава 2. Коммуникация',
+    basics:    'Глава 3. Поведение',
+    image:     'Глава 4. Имидж',
+    negotiations: 'Глава 5. Переговоры',
   };
   const sectionLabel = sectionLabels[fm.section] || fm.section || '';
   const sectionId    = fm.section || '';
@@ -445,13 +444,14 @@ async function renderPageNav(currentSlug, currentSection) {
 
     // Собираем плоский список всех страниц по порядку
     const allPages = nav.flatMap(section =>
-      section.pages.map(p => ({
-        title:   p.title,
-        href:    p.href,
-        slug:    p.href.replace(/^\/pages\//, '').replace(/\.html$/, ''),
-        section: section.title,
-      }))
-    );
+  section.pages.map(p => ({
+    title:   p.title,
+    href:    p.href,
+    slug:    new URLSearchParams(p.href.split('?')[1] || '').get('slug')
+             || p.href.replace(/^\/pages\//, '').replace(/\.html$/, ''),
+    section: section.title,
+  }))
+);
 
     const currentIdx = allPages.findIndex(p => p.slug === currentSlug);
     if (currentIdx === -1) return;
