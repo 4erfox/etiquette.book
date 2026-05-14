@@ -143,18 +143,16 @@ function getAllPages() {
 const app = express();
 app.set('trust proxy', 1); 
 
-// ✅ ИСПРАВЛЕНО: helmet с разрешением внешних шрифтов и скриптов
 app.use(helmet({
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
   crossOriginResourcePolicy: false,
 }));
 
-// ✅ ИСПРАВЛЕНО: CORS разрешает запросы с самого Render домена
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:7778',
-  // Render автоматически задаёт RENDER_EXTERNAL_URL — добавляем его
+  
   process.env.RENDER_EXTERNAL_URL,
 ].filter(Boolean);
 

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Флеш-карточки — Деловой этикет</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles/flashcards.css">
+<link rel="icon" type="image/png" href="/favicon.png">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title">etiquette-book</span>
+  <a class="back-btn" href="javascript:history.back()">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Назад
+  </a>
+</div>
+
+<div class="hero">
+  <span class="hero-label">Интерактив</span>
+  <h1>Флеш-карточки</h1>
+  <p>Нажмите на карточку, чтобы увидеть ответ. Проверьте свои знания делового этикета.</p>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="categories-wrap">
+  <div class="categories" id="categories"></div>
+</div>
+
+<!-- COUNTER -->
+<div class="counter-wrap">
+  <span class="counter" id="counter"></span>
+  <button class="shuffle-btn" id="shuffle-btn">
+    <svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+    Перемешать
+  </button>
+</div>
+
+<!-- CARDS -->
+<div class="cards-wrap">
+  <div class="cards-grid" id="cards-grid"></div>
+</div>
+
+<script src="/scripts/flashcards.js"></script>
+</body>
+</html>

@@ -12,33 +12,42 @@ async function loadPages() {
     const res = await fetch('/data/nav.json');
     const nav = await res.json();
     const pages = nav.flatMap(section =>
-      section.pages.map(p => ({
-        title:   p.title,
-        href:    p.href,
-        section: section.title,
-        slug:    p.href.replace(/^.*\/([^/]+)\.html$/, '$1'),
-        text:    '', // заполним ниже
-      }))
+      section.pages.map(p => {
+        // Извлекаем slug из href
+        let slug = '';
+        if (p.href.includes('?slug=')) {
+          slug = p.href.split('?slug=')[1].split('&')[0];
+        } else if (p.href.includes('/pages/')) {
+          slug = p.href.replace(/^.*\/([^/]+)\.html$/, '$1');
+        } else {
+          slug = p.href;
+        }
+        
+        return {
+          title: p.title,
+          href: p.href,
+          section: section.title,
+          slug: slug,
+          text: '',
+        };
+      })
     );
 
-    // Загружаем MD файлы параллельно (не блокируем UI)
+    // Загружаем MD файлы
     await Promise.allSettled(
       pages.map(async p => {
         try {
           const r = await fetch(`/docs/${p.slug}.md`);
           if (!r.ok) return;
           const md = await r.text();
-          // Убираем frontmatter и markdown-разметку, оставляем чистый текст
           p.text = md
-            .replace(/^---[\s\S]*?---\n/m, '')        // frontmatter
-            .replace(/#{1,6}\s+/g, ' ')                // заголовки
-            .replace(/[*_`~>]/g, '')                   // markdown символы
-            .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')   // ссылки
+            .replace(/^---[\s\S]*?---\n/m, '')
+            .replace(/#{1,6}\s+/g, ' ')
+            .replace(/[*_`~>]/g, '')
+            .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
             .replace(/\s+/g, ' ')
             .trim();
-          // НЕ приводим к нижнему регистру здесь — это делает normalize() при поиске
-          // Сохраняем оригинал чтобы сниппет отображался с правильными буквами
-        } catch { /* файл не найден — пропускаем */ }
+        } catch { /* файл не найден */ }
       })
     );
 

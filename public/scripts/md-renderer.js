@@ -8,7 +8,7 @@
   // ── Определяем какой MD файл загружать ─────────────────────────────────────
   // URL вида: /page.html?p=onepage  или  /pages/onepage.html (редирект)
   const params = new URLSearchParams(location.search);
-  let slug = params.get("p") || window.__PAGE_SLUG__;
+  let slug = params.get("p") || params.get("slug") || window.__PAGE_SLUG__;
 
   // Если slug не задан — берём из пути (для совместимости со старыми ссылками)
   if (!slug) {
