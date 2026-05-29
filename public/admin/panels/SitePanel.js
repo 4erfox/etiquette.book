@@ -1,12 +1,13 @@
 /**
- * admin/panels/SitePanel.js — настройки сайта
- * Название и описание сайта
+ * SitePanel.js — панель настроек сайта
+ * Позволяет менять заголовок и описание прямо в браузере без правки кода
  */
 
 import { bridge } from '../bridge.js';
 import { toast } from '../toast.js';
 import { getT } from '../theme.js';
 
+// Значения по умолчанию — используются если конфиг ещё не сохранялся на сервере
 const DEFAULTS = {
   siteTitle:       'Деловой этикет в Казахстане',
   siteDescription: 'Введение в профессиональную культуру и деловые отношения.',
@@ -14,24 +15,32 @@ const DEFAULTS = {
 
 export function renderSitePanel(container) {
   const t = getT();
+  // Текущая конфигурация — заполняется при загрузке с сервера
   let cfg = { ...DEFAULTS };
+  // Флаг несохранённых изменений — подсвечивает кнопку «Сохранить»
   let dirty = false;
+  // Флаг только что сохранённых данных — показывает зелёную галочку 2,5 секунды
   let saved = false;
 
+  // Загружает текущие настройки с сервера и запускает отрисовку формы
   async function load() {
     try {
       const res = await bridge.readSiteConfig();
+      // Объединяем дефолты с пришедшими данными — защита от неполного конфига
       cfg = { ...DEFAULTS, ...res.config };
       dirty = false;
       render();
     } catch(e) {
+      // Если конфиг не найден — работаем с дефолтными значениями
       cfg = { ...DEFAULTS };
       render();
     }
   }
 
+  // Отправляет изменённые настройки на сервер через POST /api/config
   async function save() {
     try {
+      // Берём токен из localStorage — он туда попадает при входе в панель
       const token = localStorage.getItem('adm_jwt');
       const res = await fetch('/api/config', {
         method: 'POST',
@@ -53,24 +62,27 @@ export function renderSitePanel(container) {
       toast.success('Настройки успешно сохранены');
       renderSaveBtn();
 
-      // Применяем на странице сразу без перезагрузки
+      // Сразу применяем изменения на текущей странице без перезагрузки
       applyToPage(cfg);
 
+      // Через 2,5 секунды убираем зелёную галочку и возвращаем кнопку в исходный вид
       setTimeout(() => { saved = false; renderSaveBtn(); }, 2500);
     } catch(e) {
       toast.error('Ошибка: ' + e.message);
     }
   }
 
-  // Применяем title и subtitle прямо на странице
+  // Обновляет заголовок и подзаголовок на главной странице без перезагрузки
   function applyToPage(config) {
     const mainTitle = document.querySelector('.hero h1');
     if (mainTitle && config.siteTitle) mainTitle.textContent = config.siteTitle;
     const subTitle = document.querySelector('.subtitle');
     if (subTitle && config.siteDescription) subTitle.textContent = config.siteDescription;
+    // Обновляем title вкладки браузера
     if (config.siteTitle) document.title = config.siteTitle;
   }
 
+  // Перерисовывает только кнопку «Сохранить» — меняет цвет в зависимости от состояния
   function renderSaveBtn() {
     const btn = container.querySelector('#adm-site-save');
     if (!btn) return;
@@ -80,10 +92,12 @@ export function renderSitePanel(container) {
     btn.style.color       = saved ? '#22c55e' : dirty ? t.fg : t.fgMuted;
   }
 
+  // Экранирует HTML чтобы значения конфига не сломали разметку формы
   function escapeHtml(s) {
     return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  // Строит HTML-форму с двумя полями: название и описание сайта
   function render() {
     container.innerHTML = `
       <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid ${t.border};background:${t.surface};flex-shrink:0">
@@ -116,6 +130,7 @@ export function renderSitePanel(container) {
       </div>
     `;
 
+    // Получаем ссылки на элементы формы после вставки HTML
     const reloadBtn  = container.querySelector('#adm-site-reload');
     const saveBtn    = container.querySelector('#adm-site-save');
     const titleInput = container.querySelector('#adm-site-siteTitle');
@@ -124,6 +139,7 @@ export function renderSitePanel(container) {
     if (reloadBtn) reloadBtn.addEventListener('click', load);
     if (saveBtn)   saveBtn.addEventListener('click', save);
 
+    // Обновляет cfg при вводе в любое поле и помечает форму как изменённую
     const updateValue = () => {
       cfg.siteTitle       = titleInput?.value || '';
       cfg.siteDescription = descInput?.value  || '';
@@ -131,11 +147,13 @@ export function renderSitePanel(container) {
       renderSaveBtn();
     };
 
+    // Слушаем оба события — input для немедленной реакции, change для надёжности
     titleInput?.addEventListener('input', updateValue);
     titleInput?.addEventListener('change', updateValue);
     descInput?.addEventListener('input', updateValue);
     descInput?.addEventListener('change', updateValue);
 
+    // Ctrl+S сохраняет настройки не отрывая руки от клавиатуры
     const handleKeyDown = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault();
@@ -143,11 +161,14 @@ export function renderSitePanel(container) {
         dirty ? save() : toast.info('Нет изменений для сохранения');
       }
     };
+    // Удаляем старый обработчик перед добавлением нового — иначе накапливаются дубли
     if (container._keydownHandler) container.removeEventListener('keydown', container._keydownHandler);
     container._keydownHandler = handleKeyDown;
     container.addEventListener('keydown', handleKeyDown);
+    // tabindex нужен чтобы контейнер мог получать события клавиатуры
     container.setAttribute('tabindex', '-1');
   }
 
+  // Запускаем загрузку настроек при первом открытии вкладки «Сайт»
   load();
 }

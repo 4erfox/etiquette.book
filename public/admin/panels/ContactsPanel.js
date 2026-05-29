@@ -1,68 +1,84 @@
 /**
- * admin/panels/ContactsPanel.js — управление контактами сайта
+ * ContactsPanel.js — панель управления контактами сайта
+ * Контакты хранятся в public/data/contacts.json и загружаются на главной странице
  */
 
 import { bridge } from '../bridge.js';
 import { toast } from '../toast.js';
 import { getT } from '../theme.js';
 
+// Экранирует HTML-символы чтобы данные из контактов не сломали разметку панели
 function escHtml(s) {
   return String(s ?? '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
+// Парсит строку JSON в массив контактов — при ошибке возвращает пустой массив
 function parseContacts(raw) {
   try { return JSON.parse(raw); }
   catch { return []; }
 }
 
+// Превращает массив контактов обратно в JSON-строку для сохранения на сервер
 function serializeContacts(contacts) {
   return JSON.stringify(contacts, null, 2);
 }
 
 export function renderContactsPanel(container) {
+  // Загружаем текущую тему оформления панели
   const t = getT();
+  // Рабочий массив контактов — изменяется при добавлении, редактировании, удалении
   let contacts = [];
+  // Флаг несохранённых изменений — подсвечивает кнопку «Сохранить»
   let dirty = false;
 
+  // Загружает контакты с сервера через API и запускает отрисовку
   async function load() {
     try {
       const { content } = await bridge.readContacts();
       contacts = parseContacts(content);
       render();
     } catch(e) {
-      // Если файл не существует — начинаем с пустого списка
+      // Если файл contacts.json ещё не создан — начинаем с пустого списка
       contacts = [];
       render();
     }
   }
 
+  // Отправляет текущий массив контактов на сервер и сбрасывает флаг изменений
   async function save() {
     try {
       await bridge.writeContacts(serializeContacts(contacts));
       dirty = false;
       toast.success('Контакты сохранены');
+      // Обновляем нижнюю панель чтобы убрать индикатор несохранённых изменений
       renderFooter();
     } catch(e) { toast.error(e.message); }
   }
 
+  // Добавляет новый пустой контакт в конец списка и перерисовывает панель
   function addContact() {
     contacts.push({ href: '', title: '', subtitle: '', external: true });
     dirty = true;
     render();
   }
 
+  // Удаляет контакт по индексу и перерисовывает список
   function deleteContact(i) {
     contacts.splice(i, 1);
     dirty = true;
     render();
   }
 
+  // Обновляет конкретное поле контакта при вводе в текстовое поле
   function updateContact(i, field, value) {
     contacts[i][field] = value;
     dirty = true;
+    // Перерисовываем только нижнюю кнопку — не всю панель, чтобы не сбрасывать фокус
     renderFooter();
   }
 
+  // Рисует нижнюю панель с кнопками «Обновить» и «Сохранить»
+  // Кнопка «Сохранить» выделяется если есть несохранённые изменения
   function renderFooter() {
     const footer = container.querySelector('#adm-contacts-footer');
     if (!footer) return;
@@ -72,10 +88,12 @@ export function renderContactsPanel(container) {
         Сохранить${dirty ? ' ●' : ''}
       </button>
     `;
+    // Кнопка «Обновить» перезагружает данные с сервера, отменяя несохранённые правки
     footer.querySelector('#adm-contacts-reload').onclick = load;
     footer.querySelector('#adm-contacts-save').onclick = save;
   }
 
+  // Полная перерисовка панели: список контактов + кнопка добавить + нижняя панель
   function render() {
     const t = getT();
     container.innerHTML = `
@@ -85,6 +103,7 @@ export function renderContactsPanel(container) {
 
     const list = container.querySelector('#adm-contacts-list');
 
+    // Для каждого контакта создаём карточку с полями названия, подписи и ссылки
     contacts.forEach((c, i) => {
       const row = document.createElement('div');
       row.style.cssText = `border:1px solid ${t.border};border-radius:8px;margin-bottom:8px;overflow:hidden`;
@@ -111,25 +130,28 @@ export function renderContactsPanel(container) {
       list.appendChild(row);
     });
 
-    // Кнопка добавить
+    // Кнопка добавления нового контакта в конец списка
     const addBtn = document.createElement('button');
     addBtn.style.cssText = `width:100%;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;border-radius:7px;border:1px dashed ${t.border};background:transparent;color:${t.fgMuted};font-size:11px;cursor:pointer;font-family:${t.mono}`;
     addBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Добавить контакт`;
     addBtn.onclick = addContact;
     list.appendChild(addBtn);
 
-    // Делегирование событий
+    // Используем делегирование событий вместо навешивания обработчика на каждую кнопку
     list.addEventListener('click', e => {
       const del = e.target.closest('.adm-del-contact');
+      // Если кликнули по кнопке удаления — удаляем контакт по его индексу
       if (del) { deleteContact(parseInt(del.dataset.i)); }
     });
     list.addEventListener('input', e => {
       const inp = e.target.closest('.adm-ct-field');
+      // При вводе в любое поле — обновляем соответствующее свойство контакта
       if (inp) { updateContact(parseInt(inp.dataset.i), inp.dataset.field, inp.value); }
     });
 
     renderFooter();
   }
 
+  // Запускаем загрузку данных при первом открытии панели
   load();
 }

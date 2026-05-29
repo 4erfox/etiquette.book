@@ -1,10 +1,13 @@
 /**
- * admin/panels/AssetsPanel.js — Управление ассетами и favicon
+ * AssetsPanel.js — панель управления изображениями и favicon
+ * Позволяет загружать, просматривать и удалять файлы из папки public/assets/
  */
 
 import { bridge } from '../bridge.js';
 import { getT } from '../theme.js';
 
+// Небольшая функция для вывода всплывающего уведомления в правом нижнем углу.
+// Цвет зависит от типа: красный - ошибка, зелёный - успех, синий - информация.
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
     toast.textContent = message;
@@ -21,26 +24,32 @@ function showToast(message, type = 'info') {
         z-index: 100000;
     `;
     document.body.appendChild(toast);
+    // Через 3 секунды уведомление плавно исчезает и удаляется из DOM
     setTimeout(() => {
         toast.style.opacity = '0';
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
 
+// Переводит размер файла из байт в читаемый формат: B, KB или MB
 function formatFileSize(bytes) {
     if (bytes < 1024) return bytes + ' B';
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
 
+// Экранирует спецсимволы HTML чтобы избежать XSS при вставке имён файлов в разметку
 function escapeHtml(str) {
     return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 export async function renderAssetsPanel(container) {
+    // Загружаем текущую тему оформления для единообразия с остальной панелью
     const t = getT();
+    // Список загруженных ассетов — заполняется при открытии панели
     let assets = [];
 
+    // Запрашивает список файлов с сервера и обновляет отображение
     async function loadAssets() {
         try {
             const result = await bridge.listAssets();
@@ -52,10 +61,12 @@ export async function renderAssetsPanel(container) {
         }
     }
 
+    // Отрисовывает список загруженных файлов внутри контейнера #assets-list
     function renderAssetsList() {
         const listContainer = container.querySelector('#assets-list');
         if (!listContainer) return;
 
+        // Если файлов нет — показываем заглушку вместо пустого блока
         if (assets.length === 0) {
             listContainer.innerHTML = `
                 <div style="text-align: center; padding: 2rem; color: ${t.fgSub}; font-family: ${t.mono}; font-size: 10px;">
@@ -65,6 +76,7 @@ export async function renderAssetsPanel(container) {
             return;
         }
 
+        // Для каждого файла создаём строку: превью, имя, размер, путь и кнопки действий
         listContainer.innerHTML = assets.map(asset => `
             <div style="display: flex; align-items: center; gap: 12px; padding: 10px; border-bottom: 0.5px solid ${t.border};">
                 <div style="width: 44px; height: 44px; background: ${t.surface}; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
@@ -95,13 +107,16 @@ export async function renderAssetsPanel(container) {
             </div>
         `).join('');
 
+        // Кнопка URL — копирует полный адрес файла в буфер обмена
         document.querySelectorAll('.copy-url-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const path = btn.dataset.path;
+                // Формируем абсолютный URL из текущего origin и пути к файлу
                 const fullUrl = `${window.location.origin}${path}`;
                 try {
                     await navigator.clipboard.writeText(fullUrl);
                     showToast('URL скопирован', 'success');
+                    // Временно меняем текст кнопки чтобы дать визуальную обратную связь
                     btn.textContent = '✓';
                     setTimeout(() => { btn.textContent = 'URL'; }, 1500);
                 } catch (err) {
@@ -110,10 +125,12 @@ export async function renderAssetsPanel(container) {
             });
         });
 
+        // Кнопка MD — копирует Markdown-вставку изображения вида ![name](path)
         document.querySelectorAll('.copy-markdown-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const path = btn.dataset.path;
                 const name = btn.dataset.name;
+                // Убираем расширение из имени файла для более чистого alt-текста
                 const cleanName = name.replace(/\.[^/.]+$/, '');
                 const markdown = `![${cleanName}](${path})`;
                 try {
@@ -127,13 +144,16 @@ export async function renderAssetsPanel(container) {
             });
         });
 
+        // Кнопка Удалить — запрашивает подтверждение и удаляет файл через API
         document.querySelectorAll('.delete-asset-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const filename = btn.dataset.name;
                 if (confirm(`Удалить ${filename}?`)) {
                     try {
+                        // Файл удаляется из папки public/assets/ на сервере
                         await bridge.deleteFile(`public/assets/${filename}`);
                         showToast(`Удалено: ${filename}`, 'success');
+                        // Перезагружаем список чтобы удалённый файл исчез с экрана
                         await loadAssets();
                     } catch (err) {
                         showToast('Ошибка удаления', 'error');
@@ -143,7 +163,9 @@ export async function renderAssetsPanel(container) {
         });
     }
 
+    // Загружает новый favicon: проверяет тип файла, читает как base64 и отправляет на сервер
     async function uploadFavicon(file) {
+        // Принимаем только изображения — PNG, JPG, SVG
         if (!file.type.startsWith('image/')) {
             showToast('Загрузите изображение (PNG, JPG, SVG)', 'error');
             return;
@@ -151,10 +173,12 @@ export async function renderAssetsPanel(container) {
 
         const reader = new FileReader();
         reader.onload = async (e) => {
+            // Берём только base64-часть строки, отрезая префикс data:image/...;base64,
             const base64 = e.target.result.split(',')[1];
             try {
                 await bridge.uploadFavicon(base64, file.type);
                 showToast('Favicon обновлён', 'success');
+                // После загрузки сразу обновляем иконку на вкладке браузера
                 updateFaviconOnPage();
             } catch (err) {
                 showToast('Ошибка загрузки favicon', 'error');
@@ -163,10 +187,12 @@ export async function renderAssetsPanel(container) {
         reader.readAsDataURL(file);
     }
 
+    // Обновляет тег <link rel="icon"> на странице без перезагрузки браузера
     function updateFaviconOnPage() {
         const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
         link.type = 'image/png';
         link.rel = 'shortcut icon';
+        // Добавляем timestamp чтобы браузер не брал закешированную иконку
         link.href = '/favicon.png?' + Date.now();
         document.head.appendChild(link);
         
@@ -176,6 +202,7 @@ export async function renderAssetsPanel(container) {
         }
     }
 
+    // Загружает обычное изображение в папку public/assets/
     async function uploadAsset(file) {
         if (!file.type.startsWith('image/')) {
             showToast('Загрузите изображение', 'error');
@@ -187,7 +214,9 @@ export async function renderAssetsPanel(container) {
         const reader = new FileReader();
         reader.onload = async (e) => {
             const base64 = e.target.result.split(',')[1];
+            // Заменяем небезопасные символы в имени файла на подчёркивание
             const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+            // Добавляем timestamp к имени чтобы избежать конфликтов при совпадении имён
             const filename = `${Date.now()}-${safeName}`;
             try {
                 await bridge.uploadAsset(filename, base64, file.type);
@@ -200,16 +229,20 @@ export async function renderAssetsPanel(container) {
         reader.readAsDataURL(file);
     }
 
+    // Настраивает зону drag-and-drop для загрузки файлов перетаскиванием или кликом
     function setupDragAndDrop(dropZone, uploadHandler) {
+        // При перетаскивании файла над зоной подсвечиваем её фиолетовым
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
             dropZone.style.background = 'rgba(124, 92, 252, 0.08)';
             dropZone.style.borderColor = '#7c5cfc';
         });
+        // Когда файл уходит за пределы зоны — убираем подсветку
         dropZone.addEventListener('dragleave', () => {
             dropZone.style.background = '';
             dropZone.style.borderColor = '';
         });
+        // При отпускании файла — передаём его в соответствующий обработчик загрузки
         dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
             dropZone.style.background = '';
@@ -217,6 +250,7 @@ export async function renderAssetsPanel(container) {
             const file = e.dataTransfer.files[0];
             if (file) uploadHandler(file);
         });
+        // По клику открывается стандартный диалог выбора файла
         dropZone.addEventListener('click', () => {
             const input = document.createElement('input');
             input.type = 'file';
@@ -228,6 +262,7 @@ export async function renderAssetsPanel(container) {
         });
     }
 
+    // Рисуем HTML-каркас всей панели: секция favicon сверху, секция ассетов снизу
     container.innerHTML = `
         <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid ${t.border};background:${t.surface};flex-shrink:0">
             <span style="flex:1;font-size:9px;color:${t.fgSub};font-family:${t.mono}">
@@ -285,12 +320,15 @@ export async function renderAssetsPanel(container) {
         </div>
     `;
 
+    // Привязываем drag-and-drop к зоне favicon
     const faviconZone = container.querySelector('#favicon-dropzone');
     if (faviconZone) setupDragAndDrop(faviconZone, uploadFavicon);
 
+    // Привязываем drag-and-drop к зоне загрузки обычных изображений
     const assetsZone = container.querySelector('#assets-dropzone');
     if (assetsZone) setupDragAndDrop(assetsZone, uploadAsset);
 
+    // Кнопка Обновить перечитывает favicon с сервера без перезагрузки страницы
     const refreshBtn = container.querySelector('#refresh-favicon');
     if (refreshBtn) {
         refreshBtn.addEventListener('click', () => {
@@ -299,5 +337,6 @@ export async function renderAssetsPanel(container) {
         });
     }
 
+    // Загружаем список файлов при первом открытии панели
     await loadAssets();
 }

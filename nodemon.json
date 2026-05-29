@@ -1,0 +1,6 @@
+{
+  "watch": ["server.js", "admin-server.js"],
+  "ext": "js",
+  "ignore": ["node_modules", "dist"],
+  "delay": 500
+}
