@@ -47,7 +47,6 @@ body {
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
-    /* background-attachment: fixed убран — ломает мобилы (чёрный квадрат) */
     z-index: 0;
 }
 

@@ -1,3 +1,8 @@
+/**
+ * admin-panel.js — главный файл административной панели
+ * Собирает все модули воедино и управляет отображением кнопки и панели
+ */
+
 import { onStatusChange, onAuthChange, login, logout, isAuthenticated, getStatus } from '/admin/bridge.js';
 import { mountToastContainer, toast } from '/admin/toast.js';
 import { getT, setTheme, detectTheme, onThemeChange } from '/admin/theme.js';
@@ -6,13 +11,8 @@ import { renderContactsPanel } from '/admin/panels/ContactsPanel.js';
 import { renderAssetsPanel }   from '/admin/panels/AssetsPanel.js';
 import { renderSitePanel }     from '/admin/panels/SitePanel.js';
 
-// ─────────────────────────────────────────────────────────────
-// ПРОВЕРКА: админ-панель показывается ТОЛЬКО на localhost
-// ─────────────────────────────────────────────────────────────
-const isLocal = window.location.hostname === 'localhost' || 
-                window.location.hostname === '127.0.0.1';
-
-// Проверяем доступность сервера (без сообщений пользователю)
+// Перед показом кнопки проверяем запущен ли сервер
+// Если /api/health не отвечает — панель не нужна, скрываем
 async function isServerAvailable() {
   try {
     const res = await fetch('/api/health');
@@ -22,7 +22,7 @@ async function isServerAvailable() {
   }
 }
 
-// Запускаем проверку (тихо, без логов)
+// Запускаем проверку тихо при загрузке страницы — без логов и уведомлений
 (async () => {
   const serverAvailable = await isServerAvailable();
   if (serverAvailable) {
@@ -31,13 +31,18 @@ async function isServerAvailable() {
 })();
 
 function startAdminPanel() {
+  // Применяем тему при загрузке и следим за её изменениями через MutationObserver
   setTheme(detectTheme());
-  new MutationObserver(() => setTheme(document.documentElement.getAttribute('data-theme') !== 'light'))
-    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  new MutationObserver(() =>
+    setTheme(document.documentElement.getAttribute('data-theme') !== 'light')
+  ).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
+  // Состояние панели — открыта/закрыта, активная вкладка, DOM-элементы
   let panelOpen = false, activeTab = 'pages', panelEl = null, triggerEl = null;
+  // Начальное положение и размер панели
   let panelRight = 16, panelTop = 40, panelW = 520, panelH = 600;
 
+  // SVG-иконки для кнопок и вкладок панели
   const IC = {
     admin:   `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
     pages:   `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
@@ -51,6 +56,7 @@ function startAdminPanel() {
     spin:    `<svg class="adm-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>`,
   };
 
+  // Вкладки панели — каждая открывает свой модуль управления
   const TABS = [
     { id:'pages',    label:'Страницы', icon:IC.pages    },
     { id:'contacts', label:'Контакты', icon:IC.contacts },
@@ -58,6 +64,7 @@ function startAdminPanel() {
     { id:'site',     label:'Сайт',     icon:IC.site     },
   ];
 
+  // Добавляет CSS-анимации и стили скроллбара в <head> — выполняется один раз
   function injectStyles() {
     if (document.getElementById('adm-styles')) return;
     const s = document.createElement('style');
@@ -76,27 +83,30 @@ function startAdminPanel() {
     document.head.appendChild(s);
   }
 
+  // Создаёт кнопку ADMIN в левом нижнем углу — единственная точка входа в панель
   function createTrigger() {
     const t = getT();
     const btn = document.createElement('button');
     btn.id = 'adm-trigger';
     btn.title = 'Админ Панель (Ctrl+Shift+A)';
     Object.assign(btn.style, {
-      position:'fixed',left:'8px',bottom:'70px',zIndex:'99997',
-      width:'44px',height:'44px',display:'flex',flexDirection:'column',
-      alignItems:'center',justifyContent:'center',gap:'2px',
-      borderRadius:'10px',border:`1px solid ${t.border}`,
-      background:t.surface,color:t.fgMuted,cursor:'pointer',
-      boxShadow:t.shadow,fontFamily:t.mono,
+      position:'fixed', left:'8px', bottom:'70px', zIndex:'99997',
+      width:'44px', height:'44px', display:'flex', flexDirection:'column',
+      alignItems:'center', justifyContent:'center', gap:'2px',
+      borderRadius:'10px', border:`1px solid ${t.border}`,
+      background:t.surface, color:t.fgMuted, cursor:'pointer',
+      boxShadow:t.shadow, fontFamily:t.mono,
     });
     btn.innerHTML = `${IC.admin}<span style="font-size:7px;font-weight:700;letter-spacing:.05em">ADMIN</span>`;
     btn.addEventListener('click', () => panelOpen ? closePanel() : openPanel());
+    // Подсветка кнопки при наведении мыши
     btn.addEventListener('mouseenter', () => { btn.style.background=getT().surfaceHov; btn.style.color=getT().fg; });
     btn.addEventListener('mouseleave', () => { btn.style.background=getT().surface;    btn.style.color=getT().fgMuted; });
     document.body.appendChild(btn);
     return btn;
   }
 
+  // Экран входа — показывается пока не введён правильный логин и пароль
   function renderLoginScreen(container) {
     const t = getT();
     container.innerHTML = `
@@ -105,7 +115,7 @@ function startAdminPanel() {
         <div style="font-size:13px;font-weight:700;color:${t.fg};letter-spacing:.04em">ВХОД В ПАНЕЛЬ</div>
         <div style="font-size:11px;color:${t.fgSub}">Введите учётные данные администратора</div>
         <div style="width:100%;display:flex;flex-direction:column;gap:10px;margin-top:8px">
-          <input id="adm-u" type="text"     autocomplete="username"         placeholder="Логин"
+          <input id="adm-u" type="text" autocomplete="username" placeholder="Логин"
             style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid ${t.border};background:${t.inpBg};color:${t.fg};font-size:12px;outline:none;font-family:${t.mono}">
           <input id="adm-p" type="password" autocomplete="current-password" placeholder="Пароль"
             style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid ${t.border};background:${t.inpBg};color:${t.fg};font-size:12px;outline:none;font-family:${t.mono}">
@@ -123,8 +133,10 @@ function startAdminPanel() {
     const errEl = container.querySelector('#adm-lerr');
     const btn   = container.querySelector('#adm-lbtn');
 
+    // Автоматически ставим фокус на поле логина когда форма появляется
     setTimeout(() => uEl.focus(), 60);
 
+    // Отправляет данные на сервер через bridge.login и обрабатывает ошибки
     async function doLogin() {
       const u = uEl.value.trim(), p = pEl.value;
       if (!u || !p) { errEl.textContent = 'Заполните все поля'; return; }
@@ -137,14 +149,17 @@ function startAdminPanel() {
         errEl.textContent = e.message || 'Ошибка входа';
         btn.disabled = false;
         btn.textContent = 'Войти';
+        // Очищаем пароль и возвращаем фокус для повторного ввода
         pEl.value = ''; pEl.focus();
       }
     }
 
     btn.addEventListener('click', doLogin);
+    // Enter в любом поле запускает вход без нажатия кнопки мышью
     [uEl, pEl].forEach(el => el.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); }));
   }
 
+  // Перерисовывает вкладки — скрыты до входа, показываются после авторизации
   function renderTabs() {
     if (!panelEl) return;
     const tabsEl = panelEl.querySelector('#adm-tabs');
@@ -161,11 +176,19 @@ function startAdminPanel() {
         cursor:pointer;font-family:${t.mono};flex-shrink:0;outline:none;
       ">${tab.icon}${tab.label}</button>
     `).join('');
+    // mousedown вместо click чтобы не было задержки при переключении вкладок
     tabsEl.querySelectorAll('.adm-tab').forEach(btn => {
-      btn.addEventListener('mousedown', e => { e.preventDefault(); activeTab = btn.dataset.tab; renderTabs(); renderActivePanel(); });
+      btn.addEventListener('mousedown', e => {
+        e.preventDefault();
+        activeTab = btn.dataset.tab;
+        renderTabs();
+        renderActivePanel();
+      });
     });
   }
 
+  // Показывает нужный раздел в зависимости от активной вкладки
+  // Если не авторизован — показывает форму входа
   function renderActivePanel() {
     if (!panelEl) return;
     const content   = panelEl.querySelector('#adm-panel-content');
@@ -177,58 +200,53 @@ function startAdminPanel() {
       return;
     }
     if (logoutBtn) logoutBtn.style.display = 'flex';
+    // Каждый раздел — отдельный модуль который рендерится в контейнер content
     if (activeTab === 'pages')    renderPagesPanel(content);
     if (activeTab === 'contacts') renderContactsPanel(content);
     if (activeTab === 'assets')   renderAssetsPanel(content);
     if (activeTab === 'site')     renderSitePanel(content);
   }
 
+  // Обновляет индикатор подключения в шапке панели
   function updateStatus(status) {
     if (!panelEl) return;
     const t = getT();
-    const dot = panelEl.querySelector('#adm-status-dot');
-    const text = panelEl.querySelector('#adm-status-text');
+    const dot    = panelEl.querySelector('#adm-status-dot');
+    const text   = panelEl.querySelector('#adm-status-text');
     const offline = panelEl.querySelector('#adm-offline');
-    
-    const colors = { 
-      connected: '#22c55e', 
-      connecting: '#f59e0b', 
-      disconnected: '#ef4444', 
-      error: '#ef4444' 
+
+    // Цвета и подписи для каждого состояния соединения
+    const colors = {
+      connected:    '#22c55e',
+      connecting:   '#f59e0b',
+      disconnected: '#ef4444',
+      error:        '#ef4444',
     };
-    
-    const labels = { 
-      connected: 'Подключено', 
-      connecting: 'Подключение...', 
-      disconnected: 'API не отвечает', 
-      error: 'Ошибка API' 
+    const labels = {
+      connected:    'Подключено',
+      connecting:   'Подключение...',
+      disconnected: 'API не отвечает',
+      error:        'Ошибка API',
     };
-    
-    if (dot) {
-      dot.style.background = colors[status] || t.fgSub;
-      dot.className = status === 'connecting' ? 'adm-pulse' : '';
-    }
-    
-    if (text) {
-      text.textContent = labels[status] || status;
-      text.style.color = status === 'connected' ? '#22c55e' : t.fgSub;
-    }
-    
-    if (offline) {
-      offline.style.display = 'none';
-    }
+
+    if (dot)  { dot.style.background = colors[status] || t.fgSub; dot.className = status === 'connecting' ? 'adm-pulse' : ''; }
+    if (text) { text.textContent = labels[status] || status; text.style.color = status === 'connected' ? '#22c55e' : t.fgSub; }
+    // Оверлей отключения скрываем — он больше не используется
+    if (offline) offline.style.display = 'none';
   }
 
+  // Создаёт DOM-структуру панели с шапкой, вкладками и областью контента
+  // Панель можно перетаскивать и изменять размер мышью
   function createPanel() {
     const t = getT();
     const panel = document.createElement('div');
     panel.id = 'adm-panel';
     Object.assign(panel.style, {
-      position:'fixed',right:panelRight+'px',top:panelTop+'px',
-      width:panelW+'px',height:panelH+'px',zIndex:'99999',
-      background:t.bg,border:`1px solid ${t.borderStrong}`,
-      borderRadius:'12px',boxShadow:t.shadow,
-      display:'flex',flexDirection:'column',overflow:'hidden',fontFamily:t.mono,
+      position:'fixed', right:panelRight+'px', top:panelTop+'px',
+      width:panelW+'px', height:panelH+'px', zIndex:'99999',
+      background:t.bg, border:`1px solid ${t.borderStrong}`,
+      borderRadius:'12px', boxShadow:t.shadow,
+      display:'flex', flexDirection:'column', overflow:'hidden', fontFamily:t.mono,
     });
     panel.innerHTML = `
       <header id="adm-header" style="position:relative;display:flex;align-items:center;gap:10px;padding:10px 12px 9px;background:${t.surface};border-bottom:1px solid ${t.border};flex-shrink:0;user-select:none">
@@ -263,53 +281,87 @@ function startAdminPanel() {
 
     panel.querySelector('#adm-close-btn').addEventListener('click', closePanel);
     panel.querySelector('#adm-offline-reload').addEventListener('click', () => location.reload());
-    panel.querySelector('#adm-logout-btn').addEventListener('click', () => { logout(); toast.info('Вы вышли'); renderTabs(); renderActivePanel(); });
+    // Выход — очищает токен и возвращает форму входа
+    panel.querySelector('#adm-logout-btn').addEventListener('click', () => {
+      logout(); toast.info('Вы вышли'); renderTabs(); renderActivePanel();
+    });
 
+    // Логика перетаскивания панели мышью — зажать шапку и тащить
     let dragging = false, resizing = null, sd = {};
     panel.querySelector('#adm-drag').addEventListener('mousedown', e => {
       e.preventDefault(); dragging = true;
       sd = { mx:e.clientX, my:e.clientY, right:panelRight, top:panelTop };
       document.body.style.userSelect = 'none';
     });
-    const onRS = dir => e => { e.preventDefault(); e.stopPropagation(); resizing=dir; sd={mx:e.clientX,my:e.clientY,right:panelRight,top:panelTop,w:panelW,h:panelH}; document.body.style.userSelect='none'; };
+    // Логика изменения размера — три зоны: правый край, нижний край, угол
+    const onRS = dir => e => {
+      e.preventDefault(); e.stopPropagation();
+      resizing = dir;
+      sd = { mx:e.clientX, my:e.clientY, right:panelRight, top:panelTop, w:panelW, h:panelH };
+      document.body.style.userSelect = 'none';
+    };
     panel.querySelector('#adm-r-r').addEventListener('mousedown',  onRS('r'));
     panel.querySelector('#adm-r-b').addEventListener('mousedown',  onRS('b'));
     panel.querySelector('#adm-r-rb').addEventListener('mousedown', onRS('rb'));
     document.addEventListener('mousemove', e => {
       if (!dragging && !resizing) return;
-      const dx=e.clientX-sd.mx, dy=e.clientY-sd.my;
-      if (dragging) { panelRight=Math.max(0,Math.min(window.innerWidth-panelW,sd.right-dx)); panelTop=Math.max(0,Math.min(window.innerHeight-60,sd.top+dy)); panel.style.right=panelRight+'px'; panel.style.top=panelTop+'px'; }
-      else {
-        if (resizing==='r'||resizing==='rb') { panelW=Math.max(380,Math.min(window.innerWidth-32,sd.w-dx)); panel.style.width=panelW+'px'; }
-        if (resizing==='b'||resizing==='rb') { panelH=Math.max(300,Math.min(window.innerHeight-40,sd.h+dy)); panel.style.height=panelH+'px'; }
+      const dx = e.clientX - sd.mx, dy = e.clientY - sd.my;
+      if (dragging) {
+        // Ограничиваем перемещение чтобы панель не уходила за край экрана
+        panelRight = Math.max(0, Math.min(window.innerWidth - panelW,  sd.right - dx));
+        panelTop   = Math.max(0, Math.min(window.innerHeight - 60,     sd.top   + dy));
+        panel.style.right = panelRight + 'px';
+        panel.style.top   = panelTop   + 'px';
+      } else {
+        // Ограничиваем минимальный и максимальный размер панели
+        if (resizing==='r'||resizing==='rb') { panelW = Math.max(380, Math.min(window.innerWidth-32,  sd.w-dx)); panel.style.width  = panelW+'px'; }
+        if (resizing==='b'||resizing==='rb') { panelH = Math.max(300, Math.min(window.innerHeight-40, sd.h+dy)); panel.style.height = panelH+'px'; }
       }
     });
-    document.addEventListener('mouseup', () => { dragging=false; resizing=null; document.body.style.userSelect=''; });
+    document.addEventListener('mouseup', () => {
+      dragging = false; resizing = null;
+      document.body.style.userSelect = '';
+    });
     return panel;
   }
 
+  // Открывает панель — создаёт DOM один раз при первом открытии
   function openPanel() {
-    panelW = Math.min(520, window.innerWidth-32);
-    panelH = Math.min(820, window.innerHeight-56);
+    // Подстраиваем размер под текущий экран — для маленьких мониторов
+    panelW = Math.min(520, window.innerWidth - 32);
+    panelH = Math.min(820, window.innerHeight - 56);
     panelRight = 16; panelTop = 40;
     if (!panelEl) { panelEl = createPanel(); document.body.appendChild(panelEl); }
     panelEl.style.display = 'flex';
-    Object.assign(panelEl.style, { right:panelRight+'px', top:panelTop+'px', width:panelW+'px', height:panelH+'px' });
+    Object.assign(panelEl.style, {
+      right:panelRight+'px', top:panelTop+'px',
+      width:panelW+'px', height:panelH+'px',
+    });
     updateStatus(getStatus()); renderTabs(); renderActivePanel();
     panelOpen = true;
   }
 
-  function closePanel() { if (panelEl) panelEl.style.display = 'none'; panelOpen = false; }
+  // Скрывает панель — не удаляет из DOM чтобы не терять состояние вкладок
+  function closePanel() {
+    if (panelEl) panelEl.style.display = 'none';
+    panelOpen = false;
+  }
 
+  // Инициализация — добавляем стили, тост-контейнер и кнопку ADMIN
   injectStyles();
   mountToastContainer();
   triggerEl = createTrigger();
 
+  // Подписываемся на изменения статуса соединения и авторизации
   onStatusChange(status => updateStatus(status));
   onAuthChange(() => { if (panelEl) { renderTabs(); renderActivePanel(); } });
 
+  // Горячая клавиша Ctrl+Shift+A открывает и закрывает панель
   document.addEventListener('keydown', e => {
-    if (e.ctrlKey && e.shiftKey && e.key==='A') { e.preventDefault(); panelOpen ? closePanel() : openPanel(); }
-    if (panelOpen && e.key==='Escape') closePanel();
+    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+      e.preventDefault();
+      panelOpen ? closePanel() : openPanel();
+    }
+    if (panelOpen && e.key === 'Escape') closePanel();
   });
 }
