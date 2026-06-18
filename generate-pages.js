@@ -1,10 +1,8 @@
 /**
- * generate-pages.js
- * Генерирует public/pages/*.html — тонкие заглушки которые
- * подключают md-renderer.js и передают ему slug страницы.
- *
- * Запуск: node generate-pages.js
- * Запускать после добавления новых .md файлов в docs/
+ generate-pages.js - Генерирует public/pages/*.html — тонкие заглушки которые
+ подключают md-renderer.js и передают ему slug страницы.
+ Запуск: node generate-pages.js
+ Запускать после добавления новых .md файлов в docs/
  */
 
 const fs   = require('fs');
